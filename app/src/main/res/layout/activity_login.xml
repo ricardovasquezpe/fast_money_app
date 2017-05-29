@@ -1,62 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     android:background="@color/colorPrimary">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="56dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+        android:paddingTop="25dp"
+        android:weightSum="1">
 
         <ImageView android:src="@drawable/logo"
             android:layout_width="wrap_content"
-            android:layout_height="72dp"
+            android:layout_height="200dp"
             android:layout_marginBottom="24dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.33" />
 
-        <!-- Email Label -->
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText1"
+            android:text="Find the best places in town"
             android:textColor="#fff"
-            android:drawableLeft="@drawable/ic_lock_outline_white_18dp"
-            android:drawablePadding="10dp"
-            android:hint="Email"
-            android:background="@drawable/round"/>
+            android:layout_gravity="center"/>
 
-        <EditText
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0.5dp"
             android:layout_marginTop="20dp"
-            android:id="@+id/editText2"
-            android:textColor="#fff"
-            android:drawableLeft="@drawable/ic_lock_outline_white_18dp"
-            android:drawablePadding="10dp"
-            android:hint="Password"
-            android:background="@drawable/round"/>
+            android:background="@color/colorDivider"/>
 
-        <Button
-            android:id="@+id/button1"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="20dp"
-            android:background="@drawable/outline_button"
-            android:textColor="#fff"
-            android:text="Sign In" />
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
 
-        <TextView android:id="@+id/link_signup"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="No account yet? Create one"
-            android:gravity="center"
-            android:textSize="16dip"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log in"
+                    android:textColor="@color/colorAccent"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="or"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/colorDivider"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign up"
+                    android:textColor="#fff"/>
+
+            </LinearLayout>
+
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText1"
+                android:textColor="#fff"
+                android:drawableLeft="@drawable/ic_mail_outline_white_18dp"
+                android:drawablePadding="15dp"
+                android:hint="Email"
+                android:background="@drawable/outline_edit_text"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:id="@+id/editText2"
+                android:textColor="#fff"
+                android:drawableLeft="@drawable/ic_lock_outline_white_18dp"
+                android:drawablePadding="15dp"
+                android:hint="Password"
+                android:background="@drawable/outline_edit_text"/>
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/outline_button"
+                android:textColor="#fff"
+                android:text="Sign In" />
+
+            <TextView android:id="@+id/link_signup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="No account yet? Create one"
+                android:gravity="center"
+                android:textSize="16dip"
+                android:textColor="#fff"/>
+
+        </LinearLayout>
+
 
     </LinearLayout>
-</ScrollView>
+
+</LinearLayout>
