@@ -9,4 +9,5 @@
     <color name="colorIcons">#FFFFFF</color>
     <color name="colorDivider">#6f8a96</color>
     <color name="colorHintText">#586e78</color>
+    <color name="colorWhiteText">#FFFFFF</color>
 </resources>

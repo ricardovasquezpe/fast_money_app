@@ -21,11 +21,11 @@
             android:layout_weight="0.33" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textView_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Find the best places in town"
-            android:textColor="#fff"
+            android:textColor="@color/colorWhiteText"
             android:layout_gravity="center"/>
 
         <View
@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sign up"
-                    android:textColor="#fff"/>
+                    android:textColor="@color/colorWhiteText"/>
 
             </LinearLayout>
 
@@ -76,8 +76,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText1"
-                android:textColor="#fff"
+                android:id="@+id/et_email"
+                android:textColor="@color/colorWhiteText"
                 android:drawableLeft="@drawable/ic_mail_outline_white_18dp"
                 android:drawablePadding="15dp"
                 android:hint="Email"
@@ -87,20 +87,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:id="@+id/editText2"
-                android:textColor="#fff"
+                android:id="@+id/et_password"
+                android:textColor="@color/colorWhiteText"
                 android:drawableLeft="@drawable/ic_lock_outline_white_18dp"
                 android:drawablePadding="15dp"
                 android:hint="Password"
                 android:background="@drawable/outline_edit_text"/>
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/outline_button"
-                android:textColor="#fff"
+                android:textColor="@color/colorWhiteText"
                 android:text="Sign In" />
 
             <TextView android:id="@+id/link_signup"
@@ -110,7 +110,7 @@
                 android:text="No account yet? Create one"
                 android:gravity="center"
                 android:textSize="16dip"
-                android:textColor="#fff"/>
+                android:textColor="@color/colorWhiteText"/>
 
         </LinearLayout>
 
