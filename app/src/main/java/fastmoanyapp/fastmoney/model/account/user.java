@@ -1,4 +1,4 @@
-package fastmoanyapp.fastmoney.model;
+package fastmoanyapp.fastmoney.model.account;
 
 /**
  * Created by Usuario on 29/05/2017.
