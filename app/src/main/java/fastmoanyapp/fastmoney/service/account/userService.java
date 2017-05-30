@@ -1,5 +1,7 @@
 package fastmoanyapp.fastmoney.service.account;
 
+import com.google.gson.JsonObject;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -14,6 +16,6 @@ public interface userService {
 
     @POST("/api/authenticate")
     @FormUrlEncoded
-    Call<String> authenticate(@Field("username") String title,
-                              @Field("password") String body);
+    Call<JsonObject> authenticate(@Field("username") String title,
+                                  @Field("password") String body);
 }

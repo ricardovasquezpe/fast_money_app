@@ -92,7 +92,9 @@
                 android:drawableLeft="@drawable/ic_lock_outline_white_18dp"
                 android:drawablePadding="15dp"
                 android:hint="Password"
-                android:background="@drawable/outline_edit_text"/>
+                android:background="@drawable/outline_edit_text"
+                android:ems="10"
+                android:inputType="textPassword"/>
 
             <Button
                 android:id="@+id/btn_login"
