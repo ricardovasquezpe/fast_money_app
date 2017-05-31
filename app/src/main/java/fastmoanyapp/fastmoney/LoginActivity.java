@@ -1,6 +1,8 @@
 package fastmoanyapp.fastmoney;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,6 +36,8 @@ public class LoginActivity extends Activity {
         btn_login   = (Button) findViewById(R.id.btn_login);
         et_email    = (EditText) findViewById(R.id.et_email);
         et_password = (EditText) findViewById(R.id.et_password);
+
+        btn_login.setEnabled(false);
 
         et_email.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -73,6 +77,7 @@ public class LoginActivity extends Activity {
                                 et_email.setEnabled(true);
                                 et_password.setEnabled(true);
                                 btn_login.setEnabled(true);
+                                showWrongLogin();
                             }
                         }
                     }
@@ -90,6 +95,7 @@ public class LoginActivity extends Activity {
     public void emailPasswordComplete(){
         if(!utils.isEmpty(et_email) && !utils.isEmpty(et_password)){
             btn_login.setText("SIGN IN");
+            btn_login.setEnabled(true);
             btn_login.setBackground(getResources().getDrawable(R.drawable.outline_button_full));
             btn_login.setTextColor(getResources().getColor(R.color.colorWhiteText));
         }else{
@@ -97,5 +103,18 @@ public class LoginActivity extends Activity {
             btn_login.setBackground(getResources().getDrawable(R.drawable.outline_button));
             btn_login.setTextColor(getResources().getColor(R.color.colorWhiteText));
         }
+    }
+
+    public void showWrongLogin(){
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Contraseña incorrecta");
+        alertDialog.setMessage("The user or password are not correct. Try again");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Try again",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 }
