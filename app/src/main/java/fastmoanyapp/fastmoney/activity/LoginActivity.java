@@ -1,4 +1,4 @@
-package fastmoanyapp.fastmoney;
+package fastmoanyapp.fastmoney.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,8 +13,10 @@ import android.widget.EditText;
 
 import com.google.gson.JsonObject;
 
+import fastmoanyapp.fastmoney.R;
 import fastmoanyapp.fastmoney.service.account.userService;
 import fastmoanyapp.fastmoney.utils.RetrofitClient;
+import fastmoanyapp.fastmoney.utils.UserSessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,10 +29,13 @@ public class LoginActivity extends Activity {
     EditText et_email;
     EditText et_password;
 
+    UserSessionManager session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        session = new UserSessionManager(getBaseContext());
         UserService = RetrofitClient.getClient(utils.API_BASE_URL).create(userService.class);
 
         btn_login   = (Button) findViewById(R.id.btn_login);
@@ -78,7 +83,10 @@ public class LoginActivity extends Activity {
                                 et_password.setEnabled(true);
                                 btn_login.setEnabled(true);
                                 showWrongLogin();
+                                return;
                             }
+
+                            session.createUserLoginSession(response.body().get("data").getAsJsonObject().get("username").toString(), response.body().get("data").getAsJsonObject().get("password").toString(), response.body().get("token").toString());
                         }
                     }
 
