@@ -71,7 +71,20 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/map_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" >
 
+                <fragment
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    class = "layout.Singup"
+                    android:id="@+id/fragment"
+                    android:layout_gravity="center_horizontal"/>
+
+            </LinearLayout>
 
             <EditText
                 android:layout_width="match_parent"

@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="layout.Singup"
+    android:orientation="vertical"
+    android:layout_gravity="center">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_name_su"
+        android:textColor="@color/colorWhiteText"
+        android:hint="Name"
+        android:background="@drawable/outline_edit_text"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/et_last_name_su"
+        android:textColor="@color/colorWhiteText"
+        android:hint="Last Name"
+        android:background="@drawable/outline_edit_text"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/et_email_su"
+        android:textColor="@color/colorWhiteText"
+        android:hint="Email"
+        android:background="@drawable/outline_edit_text"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/et_password_su"
+        android:textColor="@color/colorWhiteText"
+        android:hint="Password"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:background="@drawable/outline_edit_text"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/et_confirm_password_su"
+        android:textColor="@color/colorWhiteText"
+        android:hint="Confirm Password"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:background="@drawable/outline_edit_text"/>
+
+    <Button
+        android:id="@+id/btn_sing_up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/outline_button"
+        android:textColor="@color/colorWhiteText"
+        android:text="Sign Up" />
+
+</LinearLayout>

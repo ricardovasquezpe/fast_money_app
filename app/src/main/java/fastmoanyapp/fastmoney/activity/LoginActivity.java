@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,7 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import fastmoanyapp.fastmoney.utils.utils;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends FragmentActivity {
 
     userService UserService;
     Button btn_login;
