@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import fastmoanyapp.fastmoney.R;
 
-public class Singup extends Fragment {
+public class SingupFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

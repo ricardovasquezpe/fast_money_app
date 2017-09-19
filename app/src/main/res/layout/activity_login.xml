@@ -95,12 +95,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.39"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="24dp"
+            android:scrollbars="none">
 
             <fragment
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:name = "layout.Singup"
+                    android:name = "layout.SingupFragment"
                     android:id="@+id/singup_fragment"/>
 
         </ScrollView>
