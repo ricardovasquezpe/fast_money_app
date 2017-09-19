@@ -69,39 +69,42 @@ public class LoginFragment extends Fragment {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                et_email.setEnabled(false);
-                et_password.setEnabled(false);
-                btn_login.setEnabled(false);
-                btn_login.setText("Loading...");
-                btn_login.setBackgroundColor(getResources().getColor(R.color.colorWhiteText));
-                btn_login.setTextColor(getResources().getColor(R.color.colorHintText));
-
-                UserService.authenticate(et_email.getText().toString(), et_password.getText().toString()).enqueue(new Callback<JsonObject>() {
-                    @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        if(response.isSuccessful()) {
-                            Boolean status = Boolean.parseBoolean(response.body().get("status").toString());
-                            if(!status){
-                                et_email.setEnabled(true);
-                                et_password.setEnabled(true);
-                                emailPasswordComplete();
-                                showWrongLogin();
-                                return;
-                            }
-
-                            session.createUserLoginSession(response.body().get("data").getAsJsonObject().get("username").toString(), response.body().get("data").getAsJsonObject().get("password").toString(), response.body().get("token").toString());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
-                        Log.e("RESPONSE", "Unable to submit post to API.");
-                    }
-                });
-
+                doLogin();
             }
         });
         return view;
+    }
+
+    public void doLogin(){
+        et_email.setEnabled(false);
+        et_password.setEnabled(false);
+        btn_login.setEnabled(false);
+        btn_login.setText("Loading...");
+        btn_login.setBackgroundColor(getResources().getColor(R.color.colorWhiteText));
+        btn_login.setTextColor(getResources().getColor(R.color.colorHintText));
+
+        UserService.authenticate(et_email.getText().toString(), et_password.getText().toString()).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    Boolean status = Boolean.parseBoolean(response.body().get("status").toString());
+                    if(!status){
+                        et_email.setEnabled(true);
+                        et_password.setEnabled(true);
+                        emailPasswordComplete();
+                        showWrongLogin();
+                        return;
+                    }
+
+                    session.createUserLoginSession(response.body().get("data").getAsJsonObject().get("username").toString(), response.body().get("data").getAsJsonObject().get("password").toString(), response.body().get("token").toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e("RESPONSE", "Unable to submit post to API.");
+            }
+        });
     }
 
     public void emailPasswordComplete(){

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import fastmoanyapp.fastmoney.R;
 
 public class LoginActivity extends FragmentActivity {
-
     TextView tv_singup;
     TextView tv_login;
 

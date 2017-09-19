@@ -30,5 +30,5 @@ public interface userService {
                               @Field("confirmpassword") String confirmpassword,
                               @Field("email") String email,
                               @Field("type") String type,
-                              @Field("birthdate") Date birthdate);
+                              @Field("birthdate") String birthdate);
 }
