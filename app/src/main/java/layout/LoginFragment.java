@@ -3,6 +3,7 @@ package layout;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,7 +17,7 @@ import android.widget.EditText;
 import com.google.gson.JsonObject;
 
 import fastmoanyapp.fastmoney.R;
-import fastmoanyapp.fastmoney.activity.LoginActivity;
+import fastmoanyapp.fastmoney.activity.MainActivity;
 import fastmoanyapp.fastmoney.service.account.userService;
 import fastmoanyapp.fastmoney.utils.RetrofitClient;
 import fastmoanyapp.fastmoney.utils.UserSessionManager;
@@ -97,6 +98,7 @@ public class LoginFragment extends Fragment {
                     }
 
                     session.createUserLoginSession(response.body().get("data").getAsJsonObject().get("username").toString(), response.body().get("data").getAsJsonObject().get("password").toString(), response.body().get("token").toString());
+                    startActivity(new Intent(getActivity(), MainActivity.class));
                 }
             }
 
@@ -124,7 +126,7 @@ public class LoginFragment extends Fragment {
     public void showWrongLogin(){
         AlertDialog alertDialog = new AlertDialog.Builder(getView().getContext()).create();
         alertDialog.setTitle("Contraseña incorrecta");
-        alertDialog.setMessage("The user or password are not correct. Try again");
+        alertDialog.setMessage("The user or password are not correct.");
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Try again",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

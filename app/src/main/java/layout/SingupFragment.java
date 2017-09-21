@@ -1,6 +1,8 @@
 package layout;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -93,10 +95,23 @@ public class SingupFragment extends Fragment {
                 if(response.isSuccessful()) {
                     Boolean status = Boolean.parseBoolean(response.body().get("status").toString());
                     if(!status){
-                        showWrongRegister(response.body().get("data").getAsJsonArray());
+                        showWrongRegister(response.body().get("data"));
+                        et_name_su.setEnabled(true);
+                        et_last_name_su.setEnabled(true);
+                        et_username_su.setEnabled(true);
+                        et_email_su.setEnabled(true);
+                        et_password_su.setEnabled(true);
+                        et_confirm_password_su.setEnabled(true);
+                        et_birthdate_su.setEnabled(true);
+                        singupFieldsComplete();
                         return;
                     }
-
+                    FragmentManager fm = getFragmentManager();
+                    Fragment singup_fragment = fm.findFragmentById(R.id.singup_fragment);
+                    Fragment login_fragment  = fm.findFragmentById(R.id.login_fragment);
+                    hideFragment(singup_fragment);
+                    showFragment(login_fragment);
+                    postRegister();
                 }
             }
 
@@ -174,10 +189,20 @@ public class SingupFragment extends Fragment {
         });
     }
 
-    public void showWrongRegister(JsonArray msg){
+    public void showWrongRegister(JsonElement msgs){
         AlertDialog alertDialog = new AlertDialog.Builder(getView().getContext()).create();
         alertDialog.setTitle("Invalid Register");
-        alertDialog.setMessage("The user or password are not correct. Try again");
+        String msg = "";
+        if(msgs.isJsonArray()){
+            JsonArray msgsArray = msgs.getAsJsonArray();
+            for(JsonElement obj : msgsArray){
+                msg += obj.getAsJsonObject().get("msg").toString().replace("\"", "") + "\n";
+            }
+        }else{
+            msg = msgs.getAsString();
+        }
+
+        alertDialog.setMessage(msg);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Try again",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -185,5 +210,35 @@ public class SingupFragment extends Fragment {
                     }
                 });
         alertDialog.show();
+    }
+
+    public void postRegister(){
+        et_name_su.setEnabled(true);
+        et_last_name_su.setEnabled(true);
+        et_username_su.setEnabled(true);
+        et_email_su.setEnabled(true);
+        et_password_su.setEnabled(true);
+        et_confirm_password_su.setEnabled(true);
+        et_birthdate_su.setEnabled(true);
+        et_name_su.setText(null);
+        et_last_name_su.setText(null);
+        et_username_su.setText(null);
+        et_email_su.setText(null);
+        et_password_su.setText(null);
+        et_confirm_password_su.setText(null);
+        et_birthdate_su.setText(null);
+        singupFieldsComplete();
+    }
+
+    public void hideFragment(final Fragment fragment){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.hide(fragment);
+        ft.commit();
+    }
+
+    public void showFragment(final Fragment fragment){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.show(fragment);
+        ft.commit();
     }
 }
