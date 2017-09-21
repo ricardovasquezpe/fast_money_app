@@ -23,7 +23,7 @@ android:layout_height="match_parent"
         android:layout_margin="30dp"
         android:background="@android:color/transparent"
         android:clickable="true"
-        android:src="@drawable/ic_my_location_white_24dp"
+        android:src="@drawable/ic_filter_list_white_48dp"
         android:rotation="0" />
 
 </RelativeLayout>
