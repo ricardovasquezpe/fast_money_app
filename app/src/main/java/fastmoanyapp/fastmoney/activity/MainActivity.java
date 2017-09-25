@@ -13,10 +13,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,14 +30,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import fastmoanyapp.fastmoney.R;
+import layout.MySampleFabFragment;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AAH_FabulousFragment.Callbacks  {
 
     private GoogleMap mMap;
     LocationManager locationManager;
     String lattitude, longitude;
     public static final int REQUEST_LOCATION = 99;
     FloatingActionButton btn_current_location;
+    MySampleFabFragment dialogFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +48,31 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         getLocationAction();
         btn_current_location = (FloatingActionButton) findViewById(R.id.btn_current_location);
-        btn_current_location.setOnClickListener(new View.OnClickListener() {
+        /*btn_current_location.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 LatLng sydney = new LatLng(-33.852, 151.211);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             }
+        });*/
+
+        dialogFrag = MySampleFabFragment.newInstance();
+        dialogFrag.setParentFab(btn_current_location);
+        btn_current_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
+            }
         });
+    }
+
+    @Override
+    public void onResult(Object result) {
+        Log.d("k9res", "onResult: " + result.toString());
+        if (result.toString().equalsIgnoreCase("swiped_down")) {
+            //do something or nothing
+        } else {
+            //handle result
+        }
     }
 
     @Override

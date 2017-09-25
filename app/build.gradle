@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 25
     buildToolsVersion '25.0.0'
 
     defaultConfig {
@@ -30,5 +30,6 @@ dependencies {
     //compile 'com.google.android.gms:play-services-maps:11.0.4'
     compile 'com.android.support:design:23.4.0'
     compile 'com.google.android.gms:play-services:9.4.0'
+    compile 'com.allattentionhere:fabulousfilter:0.0.2'
     testCompile 'junit:junit:4.12'
 }
