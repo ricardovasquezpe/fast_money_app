@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import fastmoanyapp.fastmoney.R;
+import layout.MyFabFragment;
 import layout.MySampleFabFragment;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AAH_FabulousFragment.Callbacks  {
@@ -39,7 +40,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     String lattitude, longitude;
     public static final int REQUEST_LOCATION = 99;
     FloatingActionButton btn_current_location;
-    MySampleFabFragment dialogFrag;
+    MyFabFragment dialogFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });*/
 
-        dialogFrag = MySampleFabFragment.newInstance();
+        dialogFrag = MyFabFragment.newInstance();
         dialogFrag.setParentFab(btn_current_location);
         btn_current_location.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +64,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
             }
         });
+
+        /*dialogFrag = MySampleFabFragment.newInstance();
+        dialogFrag.setParentFab(btn_current_location);
+        btn_current_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
+            }
+        });*/
     }
 
     @Override
