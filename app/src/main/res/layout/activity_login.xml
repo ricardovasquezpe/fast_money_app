@@ -16,16 +16,27 @@
             android:layout_width="wrap_content"
             android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="10dp"
             android:layout_weight="0.33"
-            android:src="@drawable/logo" />
+            android:src="@drawable/thunder" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="FAST MONEY"
+            android:textStyle="bold"
+            android:textSize="32dip"
+            android:layout_marginBottom="24dp"
+            android:textColor="@color/colorWhiteText" />
 
         <TextView
             android:id="@+id/textView_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Find the best places in town"
+            android:text="Find the best job everywhere"
             android:textColor="@color/colorWhiteText" />
 
         <View

@@ -34,6 +34,10 @@ public class LoginActivity extends FragmentActivity {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.show(fragment_login);
                 ft.hide(fragment_signup);
+                TextView tv_login_inter  = (TextView) findViewById(R.id.tv_login);
+                TextView tv_singup_inter  = (TextView) findViewById(R.id.tv_signup);
+                tv_login_inter.setTextColor(getResources().getColor(R.color.colorAccent));
+                tv_singup_inter.setTextColor(getResources().getColor(R.color.colorWhiteText));
                 ft.commit();
             }
         });
@@ -43,6 +47,10 @@ public class LoginActivity extends FragmentActivity {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.hide(fragment_login);
                 ft.show(fragment_signup);
+                TextView tv_singup_inter  = (TextView) findViewById(R.id.tv_signup);
+                TextView tv_login_inter  = (TextView) findViewById(R.id.tv_login);
+                tv_singup_inter.setTextColor(getResources().getColor(R.color.colorAccent));
+                tv_login_inter.setTextColor(getResources().getColor(R.color.colorWhiteText));
                 ft.commit();
             }
         });

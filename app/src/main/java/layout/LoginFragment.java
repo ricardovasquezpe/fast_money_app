@@ -82,7 +82,7 @@ public class LoginFragment extends Fragment {
         btn_login.setEnabled(false);
         btn_login.setText("Loading...");
         btn_login.setBackgroundColor(getResources().getColor(R.color.colorWhiteText));
-        btn_login.setTextColor(getResources().getColor(R.color.colorHintText));
+        btn_login.setTextColor(getResources().getColor(R.color.colorAccent));
 
         UserService.authenticate(et_email.getText().toString(), et_password.getText().toString()).enqueue(new Callback<JsonObject>() {
             @Override
@@ -125,7 +125,7 @@ public class LoginFragment extends Fragment {
 
     public void showWrongLogin(){
         AlertDialog alertDialog = new AlertDialog.Builder(getView().getContext()).create();
-        alertDialog.setTitle("Contraseña incorrecta");
+        alertDialog.setTitle("Wrong User Credentials");
         alertDialog.setMessage("The user or password are not correct.");
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Try again",
                 new DialogInterface.OnClickListener() {

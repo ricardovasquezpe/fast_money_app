@@ -1,6 +1,7 @@
 package layout;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ import com.google.gson.JsonObject;
 
 import fastmoanyapp.fastmoney.R;
 import fastmoanyapp.fastmoney.service.account.userService;
+import fastmoanyapp.fastmoney.utils.DateDialog;
 import fastmoanyapp.fastmoney.utils.RetrofitClient;
 import fastmoanyapp.fastmoney.utils.utils;
 import retrofit2.Call;
@@ -39,6 +42,7 @@ public class SingupFragment extends Fragment {
     EditText et_birthdate_su;
     Button btn_sing_up;
     userService UserService;
+    DateDialog dialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +56,8 @@ public class SingupFragment extends Fragment {
         et_email_su            = (EditText) view.findViewById(R.id.et_email_su);
         et_password_su         = (EditText) view.findViewById(R.id.et_password_su);
         et_confirm_password_su = (EditText) view.findViewById(R.id.et_confirm_password_su);
-        et_birthdate_su      = (EditText) view.findViewById(R.id.et_birthdate_su);
+        et_birthdate_su        = (EditText) view.findViewById(R.id.et_birthdate_su);
+        dialog = new DateDialog();
 
         UserService = RetrofitClient.getClient(utils.API_BASE_URL).create(userService.class);
         btn_sing_up.setEnabled(false);
@@ -62,6 +67,23 @@ public class SingupFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 doRegister();
+            }
+        });
+
+        et_birthdate_su.setKeyListener(null);
+        btn_sing_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                dialog.show(ft, "DatePicker");
+            }
+        });
+        et_birthdate_su.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    dialog.show(ft, "DatePicker");
+                }
             }
         });
 
