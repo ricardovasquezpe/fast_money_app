@@ -58,7 +58,10 @@ android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:gravity="center|center_vertical|center_horizontal"
                 android:paddingTop="15px"
-                android:paddingBottom="15px">
+                android:paddingBottom="15px"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
@@ -74,6 +77,9 @@ android:layout_height="match_parent"
                 android:gravity="center|center_vertical|center_horizontal"
                 android:paddingTop="15px"
                 android:paddingBottom="15px"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
                 android:id="@+id/ll_filter">
                 <ImageView
                     android:layout_width="wrap_content"
@@ -89,7 +95,10 @@ android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:gravity="center|center_vertical|center_horizontal"
                 android:paddingTop="15px"
-                android:paddingBottom="15px">
+                android:paddingBottom="15px"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"

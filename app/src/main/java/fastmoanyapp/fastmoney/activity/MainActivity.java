@@ -112,7 +112,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setMapToolbarEnabled(false);
-        /*
+
         BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_place_black_48dp);
         LatLng sydney = new LatLng(-33.852, 151.211);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
@@ -120,7 +120,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .title("Marker in Sydney")
                 .snippet("snippet snippet snippet snippet snippet...")
                 .icon(icon);
-        mMap.addMarker(markerOptions);*/
+        mMap.addMarker(markerOptions);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
