@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
@@ -48,7 +49,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_main);
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         getLocationAction();
-        btn_current_location = (FloatingActionButton) findViewById(R.id.btn_current_location);
+        /*btn_current_location = (FloatingActionButton) findViewById(R.id.btn_current_location);
+        btn_current_location.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));*/
         /*btn_current_location.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 LatLng sydney = new LatLng(-33.852, 151.211);
@@ -56,14 +58,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });*/
 
-        dialogFrag = MyFabFragment.newInstance();
+        /*dialogFrag = MyFabFragment.newInstance();
         dialogFrag.setParentFab(btn_current_location);
         btn_current_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
             }
-        });
+        });*/
 
         /*dialogFrag = MySampleFabFragment.newInstance();
         dialogFrag.setParentFab(btn_current_location);

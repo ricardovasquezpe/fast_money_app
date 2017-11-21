@@ -10,20 +10,94 @@ android:layout_height="match_parent"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tableLayout" />
+
+    <!--LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary"
+        android:weightSum="1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/btn_current_location"
-        android:layout_width="wrap_content"
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_current_location"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:src="@drawable/ic_filter_list_white_48dp"
+            android:rotation="0" />
+
+
+    </LinearLayout-->
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="30dp"
-        android:background="@android:color/transparent"
-        android:clickable="true"
-        android:src="@drawable/ic_filter_list_white_48dp"
-        android:rotation="0" />
+        android:layout_alignParentStart="true"
+        android:id="@+id/tableLayout">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:paddingTop="15px"
+                android:paddingBottom="15px">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_apps_black_48dp"
+                    android:tint="@color/colorAccent"
+                    android:gravity="center|center_vertical|center_horizontal"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:paddingTop="15px"
+                android:paddingBottom="15px">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_filter_list_white_48dp"
+                    android:tint="@color/colorAccent"
+                    android:gravity="center|center_vertical|center_horizontal"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:paddingTop="15px"
+                android:paddingBottom="15px">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_setting_dark"
+                    android:tint="@color/colorAccent"
+                    android:gravity="center|center_vertical|center_horizontal"/>
+            </LinearLayout>
+        </TableRow>
+    </TableLayout>
+
 
 </RelativeLayout>
