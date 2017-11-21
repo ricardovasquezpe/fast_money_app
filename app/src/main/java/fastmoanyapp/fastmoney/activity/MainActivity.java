@@ -2,6 +2,7 @@ package fastmoanyapp.fastmoney.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +17,10 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
@@ -31,6 +35,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import fastmoanyapp.fastmoney.R;
+import layout.FilterMainFragment;
 import layout.MyFabFragment;
 import layout.MySampleFabFragment;
 
@@ -42,13 +47,29 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int REQUEST_LOCATION = 99;
     FloatingActionButton btn_current_location;
     MyFabFragment dialogFrag;
+    LinearLayout ll_filter;
+    //FILTER
+    Spinner sp_filter_type_job;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ll_filter          = (LinearLayout) findViewById(R.id.ll_filter);
+        sp_filter_type_job = (Spinner) findViewById(R.id.sp_filter_type_job);
+
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        getLocationAction();
+        //getLocationAction();
+
+        ll_filter.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                FilterMainFragment dialogFragment = new FilterMainFragment ();
+                dialogFragment.show(fm, "Sample Fragment");
+            }
+        });
+
         /*btn_current_location = (FloatingActionButton) findViewById(R.id.btn_current_location);
         btn_current_location.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));*/
         /*btn_current_location.setOnClickListener(new View.OnClickListener() {
