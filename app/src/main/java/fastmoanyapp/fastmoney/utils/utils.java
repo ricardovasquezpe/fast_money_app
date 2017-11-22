@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 public class utils {
     public static final String API_BASE_URL = "http://fastmoneyapi.herokuapp.com/api/";
+    public static final String API_BASE_URL_COUNTRIES = "https://restcountries.eu/";
     //public static final String API_BASE_URL = "http://192.168.1.22:8000/api/";
 
     public static boolean isEmpty(EditText myeditText) {

@@ -39,33 +39,26 @@ import layout.FilterMainFragment;
 import layout.MyFabFragment;
 import layout.MySampleFabFragment;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AAH_FabulousFragment.Callbacks  {
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback  {
 
     private GoogleMap mMap;
     LocationManager locationManager;
     String lattitude, longitude;
     public static final int REQUEST_LOCATION = 99;
-    FloatingActionButton btn_current_location;
-    MyFabFragment dialogFrag;
     LinearLayout ll_filter;
-    //FILTER
-    Spinner sp_filter_type_job;
+    FilterMainFragment dialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ll_filter          = (LinearLayout) findViewById(R.id.ll_filter);
-        sp_filter_type_job = (Spinner) findViewById(R.id.sp_filter_type_job);
-
-        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        //getLocationAction();
-
+        //ActivityCompat.requestPermissions(this,new String[]{ Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        getLocationAction();
+        dialogFragment = new FilterMainFragment ();
+        ll_filter = (LinearLayout) findViewById(R.id.ll_filter);
         ll_filter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
-                FilterMainFragment dialogFragment = new FilterMainFragment ();
                 dialogFragment.show(fm, "Sample Fragment");
             }
         });
@@ -74,57 +67,28 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         btn_current_location.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));*/
         /*btn_current_location.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                LatLng sydney = new LatLng(-33.852, 151.211);
+                LatLng sydney = new LatLng(-33.852, 151.211);0
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             }
         });*/
-
-        /*dialogFrag = MyFabFragment.newInstance();
-        dialogFrag.setParentFab(btn_current_location);
-        btn_current_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
-            }
-        });*/
-
-        /*dialogFrag = MySampleFabFragment.newInstance();
-        dialogFrag.setParentFab(btn_current_location);
-        btn_current_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
-            }
-        });*/
-    }
-
-    @Override
-    public void onResult(Object result) {
-        Log.d("k9res", "onResult: " + result.toString());
-        if (result.toString().equalsIgnoreCase("swiped_down")) {
-            //do something or nothing
-        } else {
-            //handle result
-        }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-
-        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_place_black_48dp);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_small);
         LatLng sydney = new LatLng(-33.852, 151.211);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         MarkerOptions markerOptions = new MarkerOptions().position(sydney)
                 .title("Marker in Sydney")
                 .snippet("snippet snippet snippet snippet snippet...")
                 .icon(icon);
         mMap.addMarker(markerOptions);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        mMap.setMyLocationEnabled(true);
+        //mMap.setMyLocationEnabled(true);
     }
 
     protected void buildAlertMessageNoGps() {
@@ -180,5 +144,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             getLocation();
         }
+    }
+
+    public void call(){
+
     }
 }
