@@ -36,7 +36,7 @@ public class FilterMainFragment extends DialogFragment{
         sp_filter_country  = (Spinner) rootView.findViewById(R.id.sp_filter_country);
         rb_filter_price    = (RangeBar) rootView.findViewById(R.id.rb_filter_price);
         ln_filter_reset    = (LinearLayout) rootView.findViewById(R.id.ln_filter_reset);
-        //ll_filter_filter   = (LinearLayout) rootView.findViewById(R.id.ll_filter_filter);
+        ll_filter_filter   = (LinearLayout) rootView.findViewById(R.id.ll_filter_filter);
 
         ln_filter_reset.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -53,8 +53,6 @@ public class FilterMainFragment extends DialogFragment{
                 String country = sp_filter_country.getSelectedItem().toString();
                 String left    = rb_filter_price.getLeftPinValue();
                 String right   = rb_filter_price.getRightPinValue();
-
-                ((MainActivity)getActivity()).call();
             }
         });
 

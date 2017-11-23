@@ -1,4 +1,4 @@
-package fastmoanyapp.fastmoney.service.account;
+package fastmoanyapp.fastmoney.service;
 
 import com.google.gson.JsonObject;
 

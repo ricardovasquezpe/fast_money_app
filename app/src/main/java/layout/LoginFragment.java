@@ -18,7 +18,7 @@ import com.google.gson.JsonObject;
 
 import fastmoanyapp.fastmoney.R;
 import fastmoanyapp.fastmoney.activity.MainActivity;
-import fastmoanyapp.fastmoney.service.account.userService;
+import fastmoanyapp.fastmoney.service.userService;
 import fastmoanyapp.fastmoney.utils.RetrofitClient;
 import fastmoanyapp.fastmoney.utils.UserSessionManager;
 import fastmoanyapp.fastmoney.utils.utils;
