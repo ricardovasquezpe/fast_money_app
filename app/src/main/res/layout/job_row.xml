@@ -106,7 +106,7 @@
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:text="Hourly Rate"/>
+                    android:id="@+id/item_job_type"/>
 
             </TableRow>
 
@@ -134,7 +134,7 @@
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:text="$10/Hr"/>
+                    android:id="@+id/item_job_payment"/>
 
             </TableRow>
 
@@ -162,7 +162,7 @@
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:text="Credit Card"/>
+                    android:id="@+id/item_job_payment_type"/>
 
             </TableRow>
 
@@ -190,7 +190,7 @@
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:text="Buenos Aires, Argentina"/>
+                    android:id="@+id/item_job_location"/>
 
             </TableRow>
 

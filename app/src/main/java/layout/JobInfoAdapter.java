@@ -41,16 +41,21 @@ public class JobInfoAdapter extends RecyclerView.Adapter<JobInfoAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         this.context = parent.getContext();
-        return new ViewHolder(LayoutInflater.from(context)
-                .inflate(R.layout.job_row, parent, false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.job_row, parent, false));
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final job item = data.get(position);
         holder.setIsRecyclable(false);
+
         holder.item_job_title.setText(item.getTitle());
         holder.item_job_description_short.setText(item.getDescription());
+        holder.item_job_type.setText(item.getJobType());
+        holder.item_job_payment.setText(item.getPayment());
+        holder.item_job_payment_type.setText(item.getPaymentType());
+        holder.item_job_location.setText(item.getCity() + ", " + item.getCountry());
+
         holder.expandableLayout.setInRecyclerView(true);
         holder.expandableLayout.setInterpolator(item.interpolator);
         holder.expandableLayout.setExpanded(expandState.get(position));
@@ -89,6 +94,10 @@ public class JobInfoAdapter extends RecyclerView.Adapter<JobInfoAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView item_job_title;
         public TextView item_job_description_short;
+        public TextView item_job_type;
+        public TextView item_job_payment;
+        public TextView item_job_payment_type;
+        public TextView item_job_location;
         public RelativeLayout item_job_button_expand;
         public ExpandableLinearLayout expandableLayout;
 
@@ -96,6 +105,10 @@ public class JobInfoAdapter extends RecyclerView.Adapter<JobInfoAdapter.ViewHold
             super(v);
             item_job_title             = (TextView) v.findViewById(R.id.item_job_title);
             item_job_description_short = (TextView) v.findViewById(R.id.item_job_description_short);
+            item_job_type              = (TextView) v.findViewById(R.id.item_job_type);
+            item_job_payment           = (TextView) v.findViewById(R.id.item_job_payment);
+            item_job_payment_type      = (TextView) v.findViewById(R.id.item_job_payment_type);
+            item_job_location          = (TextView) v.findViewById(R.id.item_job_location);
             item_job_button_expand     = (RelativeLayout) v.findViewById(R.id.item_job_button_expand);
             expandableLayout           = (ExpandableLinearLayout) v.findViewById(R.id.expandableLayout_expand);
         }
