@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.github.aakira.expandablelayout.Utils;
 import com.google.gson.JsonArray;
@@ -42,10 +43,19 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
     RecyclerView rv_job_list;
     JobInfoAdapter jobInfoAdapter;
     SwipeRefreshLayout srl_refresh_jobs;
-    public TransparentProgressDialog progress;
+    TransparentProgressDialog progress;
+    RelativeLayout rl_no_result_filter;
 
     jobService JobService;
     UserSessionManager session;
+
+    //VALUES FROM MODAL
+    String description_modal = "";
+    String type_job_modal    = "";
+    String country_modal     = "";
+
+    //CONSTANTE
+    String lastDateItemJobList = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,7 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
         dialogFragment   = new FilterMainFragment ();
         rv_job_list      = (RecyclerView) findViewById(R.id.rv_job_list);
         srl_refresh_jobs = (SwipeRefreshLayout)  findViewById(R.id.srl_refresh_jobs);
+        rl_no_result_filter = (RelativeLayout)  findViewById(R.id.rl_no_result_filter);
 
         jobInfoAdapter = new JobInfoAdapter(jobInfoList);
         progress = new TransparentProgressDialog(this);
@@ -88,28 +99,32 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
     }
 
     public void refreshJobs(){
-
-
+        filterJobs(description_modal, type_job_modal, country_modal);
         srl_refresh_jobs.setRefreshing(false);
     }
 
     public void populateJobs(){
         progress.show();
-        JobService.alljobs().enqueue(new Callback<JsonObject>() {
+        rv_job_list.setVisibility(View.VISIBLE);
+        rl_no_result_filter.setVisibility(View.GONE);
+        JobService.alljobs("").enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()) {
                     Boolean status = Boolean.parseBoolean(response.body().get("status").toString());
                     if(!status){
-                        //NO DATA
                         return;
                     }
 
                     JsonArray jobs = response.body().get("data").getAsJsonArray();
+                    if(jobs.size() == 0){
+                        rv_job_list.setVisibility(View.GONE);
+                        rl_no_result_filter.setVisibility(View.VISIBLE);
+                    }
                     addDataToJobs(jobs);
+                    jobInfoAdapter.notifyDataSetChanged();
+                    progress.dismiss();
                 }
-                jobInfoAdapter.notifyDataSetChanged();
-                progress.dismiss();
             }
 
             @Override
@@ -122,9 +137,11 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
     }
 
     public void filterJobs(String description, String typeJob, String country) {
-        Log.e("RESPONSE", description);
-        Log.e("RESPONSE", typeJob);
-        Log.e("RESPONSE", country);
+        rv_job_list.setVisibility(View.VISIBLE);
+        rl_no_result_filter.setVisibility(View.GONE);
+        description_modal = description;
+        type_job_modal    = typeJob;
+        country_modal     = country;
         progress.show();
         JobService.filterjobs(description, typeJob, country).enqueue(new Callback<JsonObject>() {
             @Override
@@ -132,11 +149,14 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
                 if(response.isSuccessful()) {
                     Boolean status = Boolean.parseBoolean(response.body().get("status").toString());
                     if(!status){
-                        //NO DATA
                         return;
                     }
 
                     JsonArray jobs = response.body().get("data").getAsJsonArray();
+                    if(jobs.size() == 0){
+                        rv_job_list.setVisibility(View.GONE);
+                        rl_no_result_filter.setVisibility(View.VISIBLE);
+                    }
                     addDataToJobs(jobs);
                     jobInfoAdapter.notifyDataSetChanged();
                     progress.dismiss();
@@ -172,6 +192,8 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
             JsonObject locObj  = itemObj.get("location").getAsJsonArray().get(0).getAsJsonObject();
             String country     = locObj.get("country").getAsString();
             String city        = locObj.get("city").getAsString();
+
+            lastDateItemJobList = itemObj.get("created_at").getAsString();
 
             job j = new job(id, title, description, jobType, payment, paymentType, country, city, Utils.createInterpolator(Utils.ACCELERATE_DECELERATE_INTERPOLATOR));
             jobInfoList.add(j);

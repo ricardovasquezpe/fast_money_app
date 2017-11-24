@@ -8,15 +8,10 @@ import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import fastmoanyapp.fastmoney.R;
 
-/**
- * Created by FTF-ANDREA on 24/11/2017.
- */
 public class TransparentProgressDialog extends Dialog {
     private ImageView iv;
 
@@ -38,7 +33,6 @@ public class TransparentProgressDialog extends Dialog {
         Glide.with(context)
                 .load("file:///android_asset/loading.gif").asGif().override(px,px)
                 .into(iv);
-        //iv.setImageResource(resourceIdOfImage);
         layout.addView(iv, params);
         addContentView(layout, params);
     }
@@ -46,12 +40,6 @@ public class TransparentProgressDialog extends Dialog {
     @Override
     public void show() {
         super.show();
-        /*RotateAnimation anim = new RotateAnimation(0.0f, 360.0f , Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
-        anim.setInterpolator(new LinearInterpolator());
-        anim.setRepeatCount(Animation.INFINITE);
-        anim.setDuration(3000);
-        iv.setAnimation(anim);
-        iv.startAnimation(anim);*/
     }
 
     public static int convertDpToPixel(float dp, Context context){

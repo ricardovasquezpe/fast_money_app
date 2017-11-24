@@ -15,8 +15,9 @@ import retrofit2.http.POST;
 
 public interface jobService {
 
-    @GET("/api/alljobs")
-    Call<JsonObject> alljobs();
+    @POST("/api/alljobs")
+    @FormUrlEncoded
+    Call<JsonObject> alljobs(@Field("lastdate") String lastdate);
 
     @POST("/api/filterjobs")
     @FormUrlEncoded

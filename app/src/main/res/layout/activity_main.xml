@@ -43,7 +43,37 @@
             android:id="@+id/rv_job_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="25dp"
+            android:gravity="center_horizontal"
+            android:id="@+id/rl_no_result_filter">
+
+            <ImageView
+                android:id="@+id/logo_no_results"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="0.33"
+                android:src="@drawable/thunder"
+                android:layout_alignEnd="@+id/textView"
+                android:tint="#d4d4d4"/>
+
+            <TextView
+                android:layout_below="@+id/logo_no_results"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Ops..There are no results..Try again!"
+                android:textStyle="bold"
+                android:textSize="12dp"
+                android:textColor="#717171"
+                android:id="@+id/textView"/>
+
+        </RelativeLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <TableLayout

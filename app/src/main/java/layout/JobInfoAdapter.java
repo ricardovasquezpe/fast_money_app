@@ -2,7 +2,6 @@ package layout;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -10,21 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.Utils;
-
 import fastmoanyapp.fastmoney.R;
-
 import java.util.List;
-
 import fastmoanyapp.fastmoney.model.job;
-
-/**
- * Created by FTF-ANDREA on 23/11/2017.
- */
 
 public class JobInfoAdapter extends RecyclerView.Adapter<JobInfoAdapter.ViewHolder> {
     private final List<job> data;
