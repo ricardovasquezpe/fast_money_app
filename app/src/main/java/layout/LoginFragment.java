@@ -47,7 +47,7 @@ public class LoginFragment extends Fragment {
         et_password = (EditText) view.findViewById(R.id.et_password);
 
         session = new UserSessionManager(view.getContext());
-        UserService = RetrofitClient.getClient(utils.API_BASE_URL).create(userService.class);
+        //UserService = RetrofitClient.getClient(utils.API_BASE_URL).create(userService.class);
 
         btn_login.setEnabled(false);
 

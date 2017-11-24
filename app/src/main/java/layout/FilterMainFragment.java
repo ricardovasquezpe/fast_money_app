@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -19,8 +20,10 @@ import com.appyvet.rangebar.RangeBar;
 
 import fastmoanyapp.fastmoney.R;
 import fastmoanyapp.fastmoney.activity.MainActivity;
+import fastmoanyapp.fastmoney.utils.utils;
 
 public class FilterMainFragment extends DialogFragment{
+    EditText et_filter_description;
     Spinner sp_filter_type_job;
     Spinner sp_filter_country;
     ImageView img_close_filter;
@@ -32,6 +35,7 @@ public class FilterMainFragment extends DialogFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_filter_main, container, false);
         img_close_filter   = (ImageView) rootView.findViewById(R.id.img_close_filter);
+        et_filter_description = (EditText) rootView.findViewById(R.id.et_filter_description);
         sp_filter_type_job = (Spinner) rootView.findViewById(R.id.sp_filter_type_job);
         sp_filter_country  = (Spinner) rootView.findViewById(R.id.sp_filter_country);
         rb_filter_price    = (RangeBar) rootView.findViewById(R.id.rb_filter_price);
@@ -49,10 +53,14 @@ public class FilterMainFragment extends DialogFragment{
 
         ll_filter_filter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String typeJob = sp_filter_type_job.getSelectedItem().toString();
-                String country = sp_filter_country.getSelectedItem().toString();
-                String left    = rb_filter_price.getLeftPinValue();
-                String right   = rb_filter_price.getRightPinValue();
+                String description = et_filter_description.getText().toString();
+                String typeJob = (sp_filter_type_job.getSelectedItem().toString().equals(utils.OPTION_ALL)) ? "" : sp_filter_type_job.getSelectedItem().toString();
+                String country = (sp_filter_country.getSelectedItem().toString().equals(utils.OPTION_ALL)) ? "" : sp_filter_country.getSelectedItem().toString();
+                String leftPrice  = rb_filter_price.getLeftPinValue();
+                String rightPrice = rb_filter_price.getRightPinValue();
+                filterJobsListener listener = (filterJobsListener) getActivity();
+                listener.filterJobs(description, typeJob, country);
+                dismiss();
             }
         });
 
@@ -73,6 +81,10 @@ public class FilterMainFragment extends DialogFragment{
         sp_filter_country.setAdapter(adapterCountries);
 
         return rootView;
+    }
+
+    public interface filterJobsListener {
+        void filterJobs(String description, String typeJob, String country);
     }
 
 }

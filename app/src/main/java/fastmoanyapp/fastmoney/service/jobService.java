@@ -15,8 +15,13 @@ import retrofit2.http.POST;
 
 public interface jobService {
 
-    @Headers("x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiX2lkIjoxLCJ1c2VybmFtZSI6MSwicGFzc3dvcmQiOjF9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsiZW1haWwiOiJyZXF1aXJlIiwidXNlcm5hbWUiOiJpbml0IiwicGFzc3dvcmQiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7ImVtYWlsIjp0cnVlfX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsicGFzc3dvcmQiOiIxMjM0NTYiLCJ1c2VybmFtZSI6InJpa2FyZG8zMDgiLCJfaWQiOiI1OTJhMDIyNjk2Yjc5YjI4ZmNlMWJhNzgifSwiJGluaXQiOnRydWUsImlhdCI6MTUxMTQ2NzY0NCwiZXhwIjoxNTExNTU0MDQ0fQ.TxsKUX91_N5HiQtUfVHBhjYhiJEDWJz0slPuarDCFx4")
     @GET("/api/alljobs")
     Call<JsonObject> alljobs();
+
+    @POST("/api/filterjobs")
+    @FormUrlEncoded
+    Call<JsonObject> filterjobs(@Field("description") String description,
+                                @Field("type") String type,
+                                @Field("country") String country);
 
 }
