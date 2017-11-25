@@ -1,11 +1,9 @@
 package fastmoanyapp.fastmoney.activity;
 
-import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,9 +30,7 @@ import fastmoanyapp.fastmoney.utils.TransparentProgressDialog;
 import fastmoanyapp.fastmoney.utils.UserSessionManager;
 import fastmoanyapp.fastmoney.utils.utils;
 import layout.DataAdapter;
-import layout.DataAdapter.*;
 import layout.FilterMainFragment;
-import layout.JobInfoAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,9 +49,7 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
     UserSessionManager session;
 
     //VALUES FROM MODAL
-    String description_modal = "";
-    String type_job_modal    = "";
-    String country_modal     = "";
+    String description_modal, type_job_modal, country_modal = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,22 +83,23 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
                 });
             }
         });
+
         rv_job_list.setAdapter(jobInfoAdapter);
 
         populateJobs();
+
+        srl_refresh_jobs.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshJobs();
+            }
+        });
 
         ll_filter = (LinearLayout) findViewById(R.id.ll_filter);
         ll_filter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 dialogFragment.show(fm, "Filter Dialog");
-            }
-        });
-
-        srl_refresh_jobs.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshJobs();
             }
         });
     }
