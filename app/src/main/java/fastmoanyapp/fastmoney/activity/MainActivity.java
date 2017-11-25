@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,8 @@ import fastmoanyapp.fastmoney.utils.RetrofitClient;
 import fastmoanyapp.fastmoney.utils.TransparentProgressDialog;
 import fastmoanyapp.fastmoney.utils.UserSessionManager;
 import fastmoanyapp.fastmoney.utils.utils;
+import layout.DataAdapter;
+import layout.DataAdapter.*;
 import layout.FilterMainFragment;
 import layout.JobInfoAdapter;
 import retrofit2.Call;
@@ -39,9 +42,9 @@ import retrofit2.Response;
 public class MainActivity extends FragmentActivity implements FilterMainFragment.filterJobsListener{
     LinearLayout ll_filter;
     FilterMainFragment dialogFragment;
-    List<job> jobInfoList = new ArrayList<>();
+    List<job> jobInfoList;
     RecyclerView rv_job_list;
-    JobInfoAdapter jobInfoAdapter;
+    DataAdapter jobInfoAdapter;
     SwipeRefreshLayout srl_refresh_jobs;
     TransparentProgressDialog progress;
     RelativeLayout rl_no_result_filter;
@@ -54,9 +57,6 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
     String type_job_modal    = "";
     String country_modal     = "";
 
-    //CONSTANTE
-    String lastDateItemJobList = "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,20 +64,31 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
 
         //session = new UserSessionManager(this.getBaseContext());
         Map<String, String> headers = new HashMap<>();
-        headers.put("x-access-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiX2lkIjoxLCJ1c2VybmFtZSI6MSwicGFzc3dvcmQiOjF9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsiZW1haWwiOiJyZXF1aXJlIiwidXNlcm5hbWUiOiJpbml0IiwicGFzc3dvcmQiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7ImVtYWlsIjp0cnVlfX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsicGFzc3dvcmQiOiIxMjM0NTYiLCJ1c2VybmFtZSI6InJpa2FyZG8zMDgiLCJfaWQiOiI1OTJhMDIyNjk2Yjc5YjI4ZmNlMWJhNzgifSwiJGluaXQiOnRydWUsImlhdCI6MTUxMTUyOTYzOSwiZXhwIjoxNTExNjE2MDM5fQ.BoUBvReNnGi9j0Wb1dCKXjFLdEf6Jn_kCqcpyIQnzbo");
+        headers.put("x-access-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiX2lkIjoxLCJ1c2VybmFtZSI6MSwicGFzc3dvcmQiOjF9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsiZW1haWwiOiJyZXF1aXJlIiwidXNlcm5hbWUiOiJpbml0IiwicGFzc3dvcmQiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7ImVtYWlsIjp0cnVlfX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsicGFzc3dvcmQiOiIxMjM0NTYiLCJ1c2VybmFtZSI6InJpa2FyZG8zMDgiLCJfaWQiOiI1OTJhMDIyNjk2Yjc5YjI4ZmNlMWJhNzgifSwiJGluaXQiOnRydWUsImlhdCI6MTUxMTYxNzY1MywiZXhwIjoxNTExNzA0MDUzfQ.mdz9j9IoqbkyPHw8qKZpAj2CHXNOIX4AvLa4RViJkB4");
         JobService = RetrofitClient.getClient(utils.API_BASE_URL, headers).create(jobService.class);
 
-        dialogFragment   = new FilterMainFragment ();
-        rv_job_list      = (RecyclerView) findViewById(R.id.rv_job_list);
-        srl_refresh_jobs = (SwipeRefreshLayout)  findViewById(R.id.srl_refresh_jobs);
+        rv_job_list         = (RecyclerView) findViewById(R.id.rv_job_list);
+        srl_refresh_jobs    = (SwipeRefreshLayout)  findViewById(R.id.srl_refresh_jobs);
         rl_no_result_filter = (RelativeLayout)  findViewById(R.id.rl_no_result_filter);
+        progress            = new TransparentProgressDialog(this);
+        jobInfoList         = new ArrayList<>();
+        dialogFragment      = new FilterMainFragment ();
 
-        jobInfoAdapter = new JobInfoAdapter(jobInfoList);
-        progress = new TransparentProgressDialog(this);
-
+        jobInfoAdapter = new DataAdapter(this, jobInfoList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv_job_list.setLayoutManager(mLayoutManager);
         rv_job_list.setItemAnimator(new DefaultItemAnimator());
+        jobInfoAdapter.setLoadMoreListener(new DataAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                rv_job_list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadMoreJobs(jobInfoList.get((jobInfoList.size() - 1)).getCreatedAt());
+                    }
+                });
+            }
+        });
         rv_job_list.setAdapter(jobInfoAdapter);
 
         populateJobs();
@@ -98,6 +109,38 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
         });
     }
 
+    public void loadMoreJobs(String createdAtLast){
+        job j = new job("", "", "", "", "", "", "", "", "", Utils.createInterpolator(Utils.ACCELERATE_DECELERATE_INTERPOLATOR), 1);
+        jobInfoList.add(j);
+        jobInfoAdapter.notifyItemInserted(jobInfoList.size()-1);
+
+        JobService.alljobs(createdAtLast).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    jobInfoList.remove(jobInfoList.size()-1);
+                    Boolean status = Boolean.parseBoolean(response.body().get("status").toString());
+                    if(!status){
+                        return;
+                    }
+
+                    JsonArray jobs = response.body().get("data").getAsJsonArray();
+                    if(jobs.size() > 0){
+                        addDataToJobs(jobs);
+                    }else{
+                        jobInfoAdapter.setMoreDataAvailable(false);
+                    }
+
+                    jobInfoAdapter.notifyDataChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e("RESPONSE", "Unable to submit post to API.");
+            }
+        });
+    }
     public void refreshJobs(){
         filterJobs(description_modal, type_job_modal, country_modal);
         srl_refresh_jobs.setRefreshing(false);
@@ -105,8 +148,6 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
 
     public void populateJobs(){
         progress.show();
-        rv_job_list.setVisibility(View.VISIBLE);
-        rl_no_result_filter.setVisibility(View.GONE);
         JobService.alljobs("").enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -117,10 +158,8 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
                     }
 
                     JsonArray jobs = response.body().get("data").getAsJsonArray();
-                    if(jobs.size() == 0){
-                        rv_job_list.setVisibility(View.GONE);
-                        rl_no_result_filter.setVisibility(View.VISIBLE);
-                    }
+                    if(jobs.size() == 0){}
+                    jobInfoList.clear();
                     addDataToJobs(jobs);
                     jobInfoAdapter.notifyDataSetChanged();
                     progress.dismiss();
@@ -132,13 +171,9 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
                 Log.e("RESPONSE", "Unable to submit post to API.");
             }
         });
-
-        //jobInfoAdapter.notifyDataSetChanged();
     }
 
     public void filterJobs(String description, String typeJob, String country) {
-        rv_job_list.setVisibility(View.VISIBLE);
-        rl_no_result_filter.setVisibility(View.GONE);
         description_modal = description;
         type_job_modal    = typeJob;
         country_modal     = country;
@@ -153,12 +188,10 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
                     }
 
                     JsonArray jobs = response.body().get("data").getAsJsonArray();
-                    if(jobs.size() == 0){
-                        rv_job_list.setVisibility(View.GONE);
-                        rl_no_result_filter.setVisibility(View.VISIBLE);
-                    }
+                    if(jobs.size() == 0){}
+                    jobInfoList.clear();
                     addDataToJobs(jobs);
-                    jobInfoAdapter.notifyDataSetChanged();
+                    jobInfoAdapter.notifyDataChanged();
                     progress.dismiss();
                 }
             }
@@ -171,7 +204,6 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
     }
 
     public void addDataToJobs(JsonArray jobs){
-        jobInfoList.clear();
         for (JsonElement item : jobs) {
             JsonObject itemObj = item.getAsJsonObject();
 
@@ -193,9 +225,9 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
             String country     = locObj.get("country").getAsString();
             String city        = locObj.get("city").getAsString();
 
-            lastDateItemJobList = itemObj.get("created_at").getAsString();
+            String createdAt   = itemObj.get("created_at").getAsString();
 
-            job j = new job(id, title, description, jobType, payment, paymentType, country, city, Utils.createInterpolator(Utils.ACCELERATE_DECELERATE_INTERPOLATOR));
+            job j = new job(id, title, description, jobType, payment, paymentType, country, city, createdAt, Utils.createInterpolator(Utils.ACCELERATE_DECELERATE_INTERPOLATOR), 0);
             jobInfoList.add(j);
         }
     }

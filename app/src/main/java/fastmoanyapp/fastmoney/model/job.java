@@ -15,9 +15,12 @@ public class job {
     private String PaymentType;
     private String Country;
     private String City;
+    private String CreatedAt;
     public final TimeInterpolator interpolator;
 
-    public job(String id, String title, String description, String jobType, String payment, String paymentType, String country, String city, TimeInterpolator interpolator) {
+    private int TypeLoad;
+
+    public job(String id, String title, String description, String jobType, String payment, String paymentType, String country, String city, String createdAt, TimeInterpolator interpolator, int typeLoad) {
         this.Id           = id;
         this.Title        = title;
         this.Description  = description;
@@ -26,7 +29,9 @@ public class job {
         this.PaymentType  = paymentType;
         this.Country      = country;
         this.City         = city;
+        this.CreatedAt    = createdAt;
         this.interpolator = interpolator;
+        this.TypeLoad     = typeLoad;
     }
 
     public String getId() {
@@ -91,5 +96,21 @@ public class job {
 
     public void setCity(String city) {
         City = city;
+    }
+
+    public int getTypeLoad() {
+        return TypeLoad;
+    }
+
+    public void setTypeLoad(int typeLoad) {
+        TypeLoad = typeLoad;
+    }
+
+    public String getCreatedAt() {
+        return CreatedAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        CreatedAt = createdAt;
     }
 }

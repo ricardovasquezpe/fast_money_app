@@ -1,6 +1,7 @@
 package layout;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -24,119 +25,90 @@ import fastmoanyapp.fastmoney.R;
 import fastmoanyapp.fastmoney.model.job;
 
 public class DataAdapter extends RecyclerView.Adapter {
-    private final int VIEW_ITEM = 1;
-    private final int VIEW_PROG = 0;
+    public final int TYPE_MOVIE = 0;
+    public final int TYPE_LOAD = 1;
 
-    private List<job> data;
-
-    private int visibleThreshold = 5;
-    private int lastVisibleItem, totalItemCount;
-    private boolean loading;
-    private OnLoadMoreListener onLoadMoreListener;
+    static Context context;
+    List<job> jobs;
+    OnLoadMoreListener loadMoreListener;
+    boolean isLoading = false, isMoreDataAvailable = true;
     private SparseBooleanArray expandState = new SparseBooleanArray();
 
-    public DataAdapter(List<job> jobs, RecyclerView recyclerView) {
-        data = jobs;
-        for (int i = 0; i < data.size(); i++) {
+    /*
+    * isLoading - to set the remote loading and complete status to fix back to back load more call
+    * isMoreDataAvailable - to set whether more data from server available or not.
+    * It will prevent useless load more request even after all the server data loaded
+    * */
+
+
+    public DataAdapter(Context context, List<job> jobs) {
+        this.context = context;
+        this.jobs = jobs;
+        for (int i = 0; i < jobs.size(); i++) {
             expandState.append(i, false);
         }
-
-        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-
-            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView
-                    .getLayoutManager();
-
-
-            recyclerView
-                    .addOnScrollListener(new RecyclerView.OnScrollListener() {
-                        @Override
-                        public void onScrolled(RecyclerView recyclerView,
-                                               int dx, int dy) {
-                            super.onScrolled(recyclerView, dx, dy);
-
-                            totalItemCount = linearLayoutManager.getItemCount();
-                            lastVisibleItem = linearLayoutManager
-                                    .findLastVisibleItemPosition();
-                            if (!loading
-                                    && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                                if (onLoadMoreListener != null) {
-                                    onLoadMoreListener.onLoadMore();
-                                }
-                                loading = true;
-                            }
-                        }
-                    });
-        }
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return data.get(position) != null ? VIEW_ITEM : VIEW_PROG;
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                      int viewType) {
-        RecyclerView.ViewHolder vh;
-        if (viewType == VIEW_ITEM) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.job_row, parent, false);
-
-            vh = new ViewHolder(v);
-        } else {
-            View v = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.load_more, parent, false);
-
-            vh = new ProgressViewHolder(v);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        if(viewType==TYPE_MOVIE){
+            return new MovieHolder(inflater.inflate(R.layout.job_row,parent,false));
+        }else{
+            return new LoadHolder(inflater.inflate(R.layout.load_more,parent,false));
         }
-        return vh;
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof ViewHolder) {
-            final job item = data.get(position);
+
+        if(position>=getItemCount()-1 && isMoreDataAvailable && !isLoading && loadMoreListener!=null){
+            isLoading = true;
+            loadMoreListener.onLoadMore();
+        }
+
+        if(getItemViewType(position)==TYPE_MOVIE){
+            final job item = jobs.get(position);
             holder.setIsRecyclable(false);
 
-            ((ViewHolder) holder).item_job_title.setText(item.getTitle());
-            ((ViewHolder) holder).item_job_description_short.setText(item.getDescription());
-            ((ViewHolder) holder).item_job_type.setText(item.getJobType());
-            ((ViewHolder) holder).item_job_payment.setText(item.getPayment());
-            ((ViewHolder) holder).item_job_payment_type.setText(item.getPaymentType());
-            ((ViewHolder) holder).item_job_location.setText(item.getCity() + ", " + item.getCountry());
+            ((MovieHolder)holder).item_job_title.setText(item.getTitle());
+            ((MovieHolder)holder).item_job_description_short.setText(item.getDescription());
+            ((MovieHolder)holder).item_job_type.setText(item.getJobType());
+            ((MovieHolder)holder).item_job_payment.setText(item.getPayment());
+            ((MovieHolder)holder).item_job_payment_type.setText(item.getPaymentType());
+            ((MovieHolder)holder).item_job_location.setText(item.getCity() + ", " + item.getCountry());
 
-            ((ViewHolder) holder).expandableLayout.setInRecyclerView(true);
-            ((ViewHolder) holder).expandableLayout.setInterpolator(item.interpolator);
-            ((ViewHolder) holder).expandableLayout.setExpanded(expandState.get(position));
-            ((ViewHolder) holder).expandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
+            ((MovieHolder)holder).expandableLayout.setInRecyclerView(true);
+            ((MovieHolder)holder).expandableLayout.setInterpolator(item.interpolator);
+            ((MovieHolder)holder).expandableLayout.setExpanded(expandState.get(position));
+            ((MovieHolder)holder).expandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
                 @Override
                 public void onPreOpen() {
-                    createRotateAnimator(((ViewHolder) holder).item_job_button_expand, 0f, 180f).start();
+                    createRotateAnimator(((MovieHolder)holder).item_job_button_expand, 0f, 180f).start();
                     expandState.put(position, true);
                 }
 
                 @Override
                 public void onPreClose() {
-                    createRotateAnimator(((ViewHolder) holder).item_job_button_expand, 180f, 0f).start();
+                    createRotateAnimator(((MovieHolder)holder).item_job_button_expand, 180f, 0f).start();
                     expandState.put(position, false);
                 }
             });
 
-            ((ViewHolder) holder).item_job_button_expand.setRotation(expandState.get(position) ? 180f : 0f);
-            ((ViewHolder) holder).item_job_button_expand.setOnClickListener(new View.OnClickListener() {
+            ((MovieHolder)holder).item_job_button_expand.setRotation(expandState.get(position) ? 180f : 0f);
+            ((MovieHolder)holder).item_job_button_expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    onClickButton(((ViewHolder) holder).expandableLayout);
+                    onClickButton(((MovieHolder)holder).expandableLayout);
                 }
             });
-
-        } else {
-            ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
         }
+        //No else part needed as load holder doesn't bind any data
     }
 
-    public void setLoaded() {
-        loading = false;
+    @Override
+    public int getItemViewType(int position) {
+        return jobs.get(position).getTypeLoad();
     }
 
     private void onClickButton(final ExpandableLayout expandableLayout) {
@@ -145,16 +117,12 @@ public class DataAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return jobs.size();
     }
 
-    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
-        this.onLoadMoreListener = onLoadMoreListener;
-    }
+    /* VIEW HOLDERS */
 
-
-    //
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class MovieHolder extends RecyclerView.ViewHolder{
         public TextView item_job_title;
         public TextView item_job_description_short;
         public TextView item_job_type;
@@ -164,7 +132,7 @@ public class DataAdapter extends RecyclerView.Adapter {
         public RelativeLayout item_job_button_expand;
         public ExpandableLinearLayout expandableLayout;
 
-        public ViewHolder(View v) {
+        public MovieHolder(View v) {
             super(v);
             item_job_title             = (TextView) v.findViewById(R.id.item_job_title);
             item_job_description_short = (TextView) v.findViewById(R.id.item_job_description_short);
@@ -175,14 +143,16 @@ public class DataAdapter extends RecyclerView.Adapter {
             item_job_button_expand     = (RelativeLayout) v.findViewById(R.id.item_job_button_expand);
             expandableLayout           = (ExpandableLinearLayout) v.findViewById(R.id.expandableLayout_expand);
         }
+
+        /*void bindData(MovieModel movieModel){
+            tvTitle.setText(movieModel.title);
+            tvRating.setText("Rating "+movieModel.rating);
+        }*/
     }
 
-    public static class ProgressViewHolder extends RecyclerView.ViewHolder {
-        public ProgressBar progressBar;
-
-        public ProgressViewHolder(View v) {
-            super(v);
-            progressBar = (ProgressBar) v.findViewById(R.id.loading_more_jobs);
+    static class LoadHolder extends RecyclerView.ViewHolder{
+        public LoadHolder(View itemView) {
+            super(itemView);
         }
     }
 
@@ -191,5 +161,26 @@ public class DataAdapter extends RecyclerView.Adapter {
         animator.setDuration(300);
         animator.setInterpolator(Utils.createInterpolator(Utils.LINEAR_INTERPOLATOR));
         return animator;
+    }
+
+    public void setMoreDataAvailable(boolean moreDataAvailable) {
+        isMoreDataAvailable = moreDataAvailable;
+    }
+
+    /* notifyDataSetChanged is final method so we can't override it
+         call adapter.notifyDataChanged(); after update the list
+         */
+    public void notifyDataChanged(){
+        notifyDataSetChanged();
+        isLoading = false;
+    }
+
+
+    public interface OnLoadMoreListener{
+        void onLoadMore();
+    }
+
+    public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+        this.loadMoreListener = loadMoreListener;
     }
 }
