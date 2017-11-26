@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.DetailJobActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,6 +38,9 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_main"></activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="DetailJob"></activity>
     </application>
 
 </manifest>
