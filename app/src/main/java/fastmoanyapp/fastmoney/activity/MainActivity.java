@@ -49,7 +49,7 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
     UserSessionManager session;
 
     //VALUES FROM MODAL
-    String description_modal, type_job_modal, country_modal = "";
+    String description_modal = "", type_job_modal = "", country_modal = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
 
         //session = new UserSessionManager(this.getBaseContext());
         Map<String, String> headers = new HashMap<>();
-        headers.put("x-access-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiX2lkIjoxLCJ1c2VybmFtZSI6MSwicGFzc3dvcmQiOjF9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsiZW1haWwiOiJyZXF1aXJlIiwidXNlcm5hbWUiOiJpbml0IiwicGFzc3dvcmQiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7ImVtYWlsIjp0cnVlfX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsicGFzc3dvcmQiOiIxMjM0NTYiLCJ1c2VybmFtZSI6InJpa2FyZG8zMDgiLCJfaWQiOiI1OTJhMDIyNjk2Yjc5YjI4ZmNlMWJhNzgifSwiJGluaXQiOnRydWUsImlhdCI6MTUxMTYxNzY1MywiZXhwIjoxNTExNzA0MDUzfQ.mdz9j9IoqbkyPHw8qKZpAj2CHXNOIX4AvLa4RViJkB4");
+        headers.put("x-access-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiX2lkIjoxLCJ1c2VybmFtZSI6MSwicGFzc3dvcmQiOjF9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsiZW1haWwiOiJyZXF1aXJlIiwidXNlcm5hbWUiOiJpbml0IiwicGFzc3dvcmQiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7ImVtYWlsIjp0cnVlfX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsicGFzc3dvcmQiOiIxMjM0NTYiLCJ1c2VybmFtZSI6InJpa2FyZG8zMDgiLCJfaWQiOiI1OTJhMDIyNjk2Yjc5YjI4ZmNlMWJhNzgifSwiJGluaXQiOnRydWUsImlhdCI6MTUxMTcxNDYxNiwiZXhwIjoxNTExODAxMDE2fQ.fTsXUAPXid-4N-W3lLkYt3mywGI_El_QVGi3mejdiYg");
         JobService = RetrofitClient.getClient(utils.API_BASE_URL, headers).create(jobService.class);
 
         rv_job_list         = (RecyclerView) findViewById(R.id.rv_job_list);
@@ -109,7 +109,7 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
         jobInfoList.add(j);
         jobInfoAdapter.notifyItemInserted(jobInfoList.size()-1);
 
-        JobService.alljobs(createdAtLast).enqueue(new Callback<JsonObject>() {
+        JobService.filterjobs(createdAtLast, description_modal, type_job_modal, country_modal).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()) {
@@ -143,7 +143,7 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
 
     public void populateJobs(){
         progress.show();
-        JobService.alljobs("").enqueue(new Callback<JsonObject>() {
+        JobService.filterjobs("", "", "", "").enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()) {
@@ -172,8 +172,9 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
         description_modal = description;
         type_job_modal    = typeJob;
         country_modal     = country;
+        jobInfoAdapter.setMoreDataAvailable(true);
         progress.show();
-        JobService.filterjobs(description, typeJob, country).enqueue(new Callback<JsonObject>() {
+        JobService.filterjobs("", description, typeJob, country).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.isSuccessful()) {

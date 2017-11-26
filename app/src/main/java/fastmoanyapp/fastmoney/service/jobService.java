@@ -15,13 +15,14 @@ import retrofit2.http.POST;
 
 public interface jobService {
 
-    @POST("/api/alljobs")
+    /*@POST("/api/alljobs")
     @FormUrlEncoded
-    Call<JsonObject> alljobs(@Field("lastdate") String lastdate);
+    Call<JsonObject> alljobs(@Field("lastdate") String lastdate);*/
 
     @POST("/api/filterjobs")
     @FormUrlEncoded
-    Call<JsonObject> filterjobs(@Field("description") String description,
+    Call<JsonObject> filterjobs(@Field("lastdate") String lastdate,
+                                @Field("description") String description,
                                 @Field("type") String type,
                                 @Field("country") String country);
 
