@@ -51,7 +51,8 @@
         android:layout_below="@+id/relativeLayout"
         android:layout_above="@+id/linearLayout3"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingRight="20dp"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,6 +85,7 @@
 
             </LinearLayout>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -93,32 +95,47 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Avenida Circunvalacion del Golf, Santiago de Surco, Peru"
+                    android:lineSpacingExtra="4dp"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing "
                     android:textColor="#000000"
                     android:textSize="13dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="11dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:textStyle="bold"
-                    android:text="(See on Google Maps)"
-                    android:textSize="10dp"
-                    android:paddingTop="3dp"/>
+                    android:lineSpacingExtra="4dp"
+                    android:text="1. Lorem ipsum dolor sit amet (Mandatory)\n2. nsequat orci, nec rhoncus sem (Mandatory)\n3. nsequat orci, nec rhoncus sem"
+                    android:textColor="#000000"
+                    android:textSize="13dp"/>
 
             </LinearLayout>
+
+            <!--ss.com.bannerslider.views.BannerSlider
+                android:id="@+id/detail_job_images"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:loopSlides="true"/-->
 
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="0.5dp"
                 android:background="#d3d7d8"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginTop="16dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -205,46 +222,102 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0.5dp"
                 android:background="#d3d7d8"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="12dp">
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="50">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Country"
+                            android:textSize="13dp"
+                            android:layout_marginBottom="2dp"
+                            android:textColor="#b4b4b4"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="France"
+                            android:textSize="13dp"
+                            android:gravity="center"
+                            android:textColor="#000000"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="50">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="City"
+                            android:textSize="13dp"
+                            android:textColor="#b4b4b4"
+                            android:layout_marginBottom="2dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Santiago de Surco"
+                            android:textSize="13dp"
+                            android:gravity="center"
+                            android:textColor="#000000"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:lineSpacingExtra="4dp"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing "
-                    android:textColor="#000000"
-                    android:textSize="13dp"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Street Name"
+                        android:textSize="13dp"
+                        android:textColor="#b4b4b4"
+                        android:layout_marginBottom="2dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Avenida Circunvalacion del Golf"
+                        android:textColor="#000000"
+                        android:textSize="13dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(See on Google Maps)"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="10dp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="11dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="4dp"
-                    android:text="1. Lorem ipsum dolor sit amet (Mandatory)\n2. nsequat orci, nec rhoncus sem (Mandatory)\n3. nsequat orci, nec rhoncus sem"
-                    android:textColor="#000000"
-                    android:textSize="13dp"/>
-
-            </LinearLayout>
-
-            <ss.com.bannerslider.views.BannerSlider
-                android:id="@+id/detail_job_images"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:loopSlides="true"/>
 
         </LinearLayout>
 
