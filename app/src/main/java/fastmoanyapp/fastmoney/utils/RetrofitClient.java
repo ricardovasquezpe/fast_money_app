@@ -37,9 +37,11 @@ public class RetrofitClient {
             public Response intercept(Interceptor.Chain chain) throws IOException {
                 Request original = chain.request();
                 Request.Builder requestBuilder = original.newBuilder(); // <-- this is the important line
-                for (Map.Entry<String, String> pairs : headers.entrySet()) {
-                    if (pairs.getValue() != null) {
-                        requestBuilder.header(pairs.getKey(), pairs.getValue());
+                if(headers != null){
+                    for (Map.Entry<String, String> pairs : headers.entrySet()) {
+                        if (pairs.getValue() != null) {
+                            requestBuilder.header(pairs.getKey(), pairs.getValue());
+                        }
                     }
                 }
                 requestBuilder.method(original.method(), original.body());

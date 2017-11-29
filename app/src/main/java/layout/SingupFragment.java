@@ -59,7 +59,7 @@ public class SingupFragment extends Fragment {
         et_birthdate_su        = (EditText) view.findViewById(R.id.et_birthdate_su);
         dialog = new DateDialog();
 
-        //UserService = RetrofitClient.getClient(utils.API_BASE_URL).create(userService.class);
+        UserService = RetrofitClient.getClient(utils.API_BASE_URL, null).create(userService.class);
         btn_sing_up.setEnabled(false);
         addChangeListenerFields();
 

@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.aakira.expandablelayout.Utils;
+import com.google.android.gms.vision.text.Line;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -47,6 +48,7 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
     SwipeRefreshLayout srl_refresh_jobs;
     TransparentProgressDialog progress;
     RelativeLayout rl_no_result_filter;
+    LinearLayout nav_bar_main_settings;
 
     jobService JobService;
     UserSessionManager session;
@@ -67,6 +69,7 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
         rv_job_list         = (RecyclerView) findViewById(R.id.rv_job_list);
         srl_refresh_jobs    = (SwipeRefreshLayout)  findViewById(R.id.srl_refresh_jobs);
         rl_no_result_filter = (RelativeLayout)  findViewById(R.id.rl_no_result_filter);
+        nav_bar_main_settings = (LinearLayout) findViewById(R.id.nav_bar_main_settings);
         progress            = new TransparentProgressDialog(this);
         jobInfoList         = new ArrayList<>();
         dialogFragment      = new FilterMainFragment ();
@@ -109,7 +112,6 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
         rv_job_list.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, rv_job_list ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Log.e("RESPONSE", String.valueOf(view.getId()));
                         Intent intent = new Intent(getBaseContext(), DetailJobActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.addCategory(Intent.CATEGORY_HOME);
@@ -122,6 +124,15 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
                     }
                 })
         );
+
+        nav_bar_main_settings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+            }
+        });
     }
 
     public void loadMoreJobs(String createdAtLast){
