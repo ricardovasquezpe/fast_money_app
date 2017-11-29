@@ -26,4 +26,8 @@ public interface jobService {
                                 @Field("type") String type,
                                 @Field("country") String country);
 
+    @POST("/api/jobdetails")
+    @FormUrlEncoded
+    Call<JsonObject> jobdetails(@Field("id_job") String id_job);
+
 }

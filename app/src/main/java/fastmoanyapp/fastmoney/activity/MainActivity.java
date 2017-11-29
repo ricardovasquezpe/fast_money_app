@@ -1,6 +1,7 @@
 package fastmoanyapp.fastmoney.activity;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.aakira.expandablelayout.Utils;
 import com.google.gson.JsonArray;
@@ -25,6 +27,7 @@ import java.util.Map;
 import fastmoanyapp.fastmoney.R;
 import fastmoanyapp.fastmoney.model.job;
 import fastmoanyapp.fastmoney.service.jobService;
+import fastmoanyapp.fastmoney.utils.RecyclerItemClickListener;
 import fastmoanyapp.fastmoney.utils.RetrofitClient;
 import fastmoanyapp.fastmoney.utils.TransparentProgressDialog;
 import fastmoanyapp.fastmoney.utils.UserSessionManager;
@@ -36,7 +39,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends FragmentActivity implements FilterMainFragment.filterJobsListener{
-    LinearLayout ll_filter;
+    TextView tv_filter;
     FilterMainFragment dialogFragment;
     List<job> jobInfoList;
     RecyclerView rv_job_list;
@@ -58,7 +61,7 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
 
         //session = new UserSessionManager(this.getBaseContext());
         Map<String, String> headers = new HashMap<>();
-        headers.put("x-access-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiX2lkIjoxLCJ1c2VybmFtZSI6MSwicGFzc3dvcmQiOjF9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsiZW1haWwiOiJyZXF1aXJlIiwidXNlcm5hbWUiOiJpbml0IiwicGFzc3dvcmQiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7ImVtYWlsIjp0cnVlfX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsicGFzc3dvcmQiOiIxMjM0NTYiLCJ1c2VybmFtZSI6InJpa2FyZG8zMDgiLCJfaWQiOiI1OTJhMDIyNjk2Yjc5YjI4ZmNlMWJhNzgifSwiJGluaXQiOnRydWUsImlhdCI6MTUxMTcxNDYxNiwiZXhwIjoxNTExODAxMDE2fQ.fTsXUAPXid-4N-W3lLkYt3mywGI_El_QVGi3mejdiYg");
+        headers.put("x-access-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiX2lkIjoxLCJ1c2VybmFtZSI6MSwicGFzc3dvcmQiOjF9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsiZW1haWwiOiJyZXF1aXJlIiwidXNlcm5hbWUiOiJpbml0IiwicGFzc3dvcmQiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7ImVtYWlsIjp0cnVlfX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsicGFzc3dvcmQiOiIxMjM0NTYiLCJ1c2VybmFtZSI6InJpa2FyZG8zMDgiLCJfaWQiOiI1OTJhMDIyNjk2Yjc5YjI4ZmNlMWJhNzgifSwiJGluaXQiOnRydWUsImlhdCI6MTUxMTk2NTc2NH0.dlpV24KDkCNqRiP6dEB_Ytelo4Ms1M8eQZ8HNtrMhXc");
         JobService = RetrofitClient.getClient(utils.API_BASE_URL, headers).create(jobService.class);
 
         rv_job_list         = (RecyclerView) findViewById(R.id.rv_job_list);
@@ -95,13 +98,30 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
             }
         });
 
-        ll_filter = (LinearLayout) findViewById(R.id.ll_filter);
-        ll_filter.setOnClickListener(new View.OnClickListener() {
+        tv_filter = (TextView) findViewById(R.id.tv_filter);
+        tv_filter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 dialogFragment.show(fm, "Filter Dialog");
             }
         });
+
+        rv_job_list.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, rv_job_list ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        Log.e("RESPONSE", String.valueOf(view.getId()));
+                        Intent intent = new Intent(getBaseContext(), DetailJobActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.putExtra("JOB_ID_CLICKED", jobInfoList.get(position).getId());
+                        startActivity(intent);
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        Log.e("RESPONSE", "ITEMLONGCLICK");
+                    }
+                })
+        );
     }
 
     public void loadMoreJobs(String createdAtLast){

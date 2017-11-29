@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Usuario on 30/05/2017.
@@ -45,5 +47,31 @@ public class utils {
             // Log exception
             return null;
         }
+    }
+
+    public static String differenceDates(Date d1,Date d2){
+        String diffText = "";
+        try {
+            long diff = d2.getTime() - d1.getTime();
+
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000) % 24;
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+            if(diffDays > 0){
+                diffText = diffDays + " day(s) ago";
+            }else if(diffHours > 0){
+                diffText = diffHours + " Hour(s) ago";
+            }else if(diffMinutes > 0){
+                diffText = diffMinutes + " Minute(s) ago";
+            }else if(diffSeconds > 0){
+                diffText = diffSeconds + " Second(s) ago";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return diffText;
     }
 }

@@ -2,6 +2,8 @@ package fastmoanyapp.fastmoney.model;
 
 import android.animation.TimeInterpolator;
 
+import com.google.gson.JsonArray;
+
 /**
  * Created by FTF-ANDREA on 23/11/2017.
  */
@@ -15,8 +17,12 @@ public class job {
     private String PaymentType;
     private String Country;
     private String City;
+    private String StreetName;
     private String CreatedAt;
-    public final TimeInterpolator interpolator;
+    private String Duration;
+    private JsonArray Requirements;
+    private JsonArray GeoLocation;
+    public TimeInterpolator interpolator;
 
     private int TypeLoad;
 
@@ -32,6 +38,22 @@ public class job {
         this.CreatedAt    = createdAt;
         this.interpolator = interpolator;
         this.TypeLoad     = typeLoad;
+    }
+
+    public job(String id, String title, String description, String jobType, String payment, String paymentType, String country, String city, String createdAt, String duration, JsonArray requirements, JsonArray geoLocation, String streetName){
+        this.Id           = id;
+        this.Title        = title;
+        this.Description  = description;
+        this.JobType      = jobType;
+        this.Payment      = payment;
+        this.PaymentType  = paymentType;
+        this.Country      = country;
+        this.City         = city;
+        this.CreatedAt    = createdAt;
+        this.Duration     = duration;
+        this.Requirements = requirements;
+        this.GeoLocation  = geoLocation;
+        this.StreetName   = streetName;
     }
 
     public String getId() {
@@ -112,5 +134,45 @@ public class job {
 
     public void setCreatedAt(String createdAt) {
         CreatedAt = createdAt;
+    }
+
+    public String getDuration() {
+        return Duration;
+    }
+
+    public void setDuration(String duration) {
+        Duration = duration;
+    }
+
+    public TimeInterpolator getInterpolator() {
+        return interpolator;
+    }
+
+    public void setInterpolator(TimeInterpolator interpolator) {
+        this.interpolator = interpolator;
+    }
+
+    public JsonArray getRequirements() {
+        return Requirements;
+    }
+
+    public void setRequirements(JsonArray requirements) {
+        Requirements = requirements;
+    }
+
+    public JsonArray getGeoLocation() {
+        return GeoLocation;
+    }
+
+    public void setGeoLocation(JsonArray geoLocation) {
+        GeoLocation = geoLocation;
+    }
+
+    public String getStreetName() {
+        return StreetName;
+    }
+
+    public void setStreetName(String streetName) {
+        StreetName = streetName;
     }
 }

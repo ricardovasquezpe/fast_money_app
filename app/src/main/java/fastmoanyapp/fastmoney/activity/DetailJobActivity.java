@@ -1,16 +1,41 @@
 package fastmoanyapp.fastmoney.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.aakira.expandablelayout.Utils;
+import com.google.android.gms.vision.text.Text;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 import fastmoanyapp.fastmoney.R;
+import fastmoanyapp.fastmoney.model.job;
+import fastmoanyapp.fastmoney.service.jobService;
+import fastmoanyapp.fastmoney.utils.RetrofitClient;
+import fastmoanyapp.fastmoney.utils.TransparentProgressDialog;
+import fastmoanyapp.fastmoney.utils.utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ss.com.bannerslider.banners.Banner;
 import ss.com.bannerslider.banners.RemoteBanner;
 import ss.com.bannerslider.events.OnBannerClickListener;
@@ -19,12 +44,77 @@ import ss.com.bannerslider.views.BannerSlider;
 public class DetailJobActivity extends AppCompatActivity{
 
     BannerSlider detail_job_images;
+    TransparentProgressDialog progress;
+    ImageView iv_detaild_job_back;
+    ImageView iv_detaild_job_favorite;
+    jobService JobService;
+    job jobDetailObject;
+    TextView detail_job_title;
+    TextView detail_job_posted_time;
+    TextView detail_job_details;
+    TextView detail_job_requirements;
+    TextView detail_job_payment_type;
+    TextView detail_job_payment_rate;
+    TextView detail_job_payment_duration;
+    TextView detail_job_payment_method;
+    TextView detail_job_country;
+    TextView detail_job_city;
+    TextView detail_job_street_name;
+    TextView detail_job_see_on_gmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_job);
         getSupportActionBar().hide();
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("x-access-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiX2lkIjoxLCJ1c2VybmFtZSI6MSwicGFzc3dvcmQiOjF9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsiZW1haWwiOiJyZXF1aXJlIiwidXNlcm5hbWUiOiJpbml0IiwicGFzc3dvcmQiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7ImVtYWlsIjp0cnVlfX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsicGFzc3dvcmQiOiIxMjM0NTYiLCJ1c2VybmFtZSI6InJpa2FyZG8zMDgiLCJfaWQiOiI1OTJhMDIyNjk2Yjc5YjI4ZmNlMWJhNzgifSwiJGluaXQiOnRydWUsImlhdCI6MTUxMTk2NTc2NH0.dlpV24KDkCNqRiP6dEB_Ytelo4Ms1M8eQZ8HNtrMhXc");
+        JobService = RetrofitClient.getClient(utils.API_BASE_URL, headers).create(jobService.class);
+
+        progress = new TransparentProgressDialog(this);
+        progress.show();
+
+        iv_detaild_job_back         = (ImageView) findViewById(R.id.iv_detaild_job_back);
+        iv_detaild_job_favorite     = (ImageView) findViewById(R.id.iv_detaild_job_favorite);
+        detail_job_title            = (TextView)  findViewById(R.id.detail_job_title);
+        detail_job_posted_time      = (TextView)  findViewById(R.id.detail_job_posted_time);
+        detail_job_details          = (TextView)  findViewById(R.id.detail_job_details);
+        detail_job_requirements     = (TextView)  findViewById(R.id.detail_job_requirements);
+        detail_job_payment_type     = (TextView)  findViewById(R.id.detail_job_payment_type);
+        detail_job_payment_rate     = (TextView)  findViewById(R.id.detail_job_payment_rate);
+        detail_job_payment_duration = (TextView)  findViewById(R.id.detail_job_payment_duration);
+        detail_job_payment_method   = (TextView)  findViewById(R.id.detail_job_payment_method);
+        detail_job_country          = (TextView)  findViewById(R.id.detail_job_country);
+        detail_job_city             = (TextView)  findViewById(R.id.detail_job_city);
+        detail_job_street_name      = (TextView)  findViewById(R.id.detail_job_street_name);
+        detail_job_see_on_gmap      = (TextView)  findViewById(R.id.detail_job_see_on_gmap);
+
+        iv_detaild_job_back.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                DetailJobActivity.super.onBackPressed();
+            }
+        });
+
+        iv_detaild_job_favorite.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                iv_detaild_job_favorite.setImageResource(R.drawable.ic_favorite_black_48dp);
+                Toast.makeText(getApplicationContext(), "Job added on your favorites", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        detail_job_see_on_gmap.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String strUri = "http://maps.google.com/maps?q=loc:" + jobDetailObject.getGeoLocation().get(0).getAsString() + "," + jobDetailObject.getGeoLocation().get(1).getAsString() + " (" + jobDetailObject.getTitle() + ")";
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(strUri));
+                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                startActivity(intent);
+            }
+        });
+
+        Bundle b = getIntent().getExtras();
+        String id = b.getString("JOB_ID_CLICKED");
+        getJobDetails(id);
 
         /*BannerSlider bannerSlider = (BannerSlider) findViewById(R.id.detail_job_images);
         List<Banner> banners=new ArrayList<>();
@@ -42,5 +132,85 @@ public class DetailJobActivity extends AppCompatActivity{
             }
         });*/
 
+    }
+
+    public void getJobDetails(String jobId){
+        JobService.jobdetails(jobId).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    Boolean status = Boolean.parseBoolean(response.body().get("status").toString());
+                    if(!status){
+                        return;
+                    }
+
+                    JsonObject itemObj = response.body().get("data").getAsJsonObject();
+
+                    String id          = itemObj.get("_id").getAsString();
+                    String title       = itemObj.get("title").getAsString();
+                    String description = itemObj.get("description").getAsString();
+
+                    JsonObject paymentObj = itemObj.get("payment").getAsJsonArray().get(0).getAsJsonObject();
+                    String jobType     = paymentObj.get("type").getAsString();
+                    String duration    = paymentObj.get("duration").getAsString();
+
+                    String payment = "$" + paymentObj.get("amount").getAsString();
+                    if(jobType.equals(utils.TYPE_JOB_HOURLY_RATE)){
+                        payment += "/Hr";
+                    }
+
+                    String paymentType = paymentObj.get("method").getAsString();
+
+                    JsonObject locObj  = itemObj.get("location").getAsJsonArray().get(0).getAsJsonObject();
+                    String country     = locObj.get("country").getAsString();
+                    String city        = locObj.get("city").getAsString();
+                    String streetname  = locObj.get("streetName").getAsString();
+
+                    String createdAt   = itemObj.get("created_at").getAsString();
+                    JsonArray req      = itemObj.get("requirements").getAsJsonArray();
+                    JsonArray geo      = itemObj.get("location_geo").getAsJsonArray();
+
+                    jobDetailObject = new job(id, title, description, jobType, payment, paymentType, country, city, createdAt, duration, req, geo, streetname);
+                    setDataToView();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e("RESPONSE", "Unable to submit post to API.");
+            }
+        });
+
+    }
+
+    public void setDataToView(){
+        detail_job_title.setText(jobDetailObject.getTitle());
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            Date dateJob = sdf.parse(jobDetailObject.getCreatedAt());
+            Date currentDate = new Date();
+            String diff = utils.differenceDates(currentDate, dateJob);
+            detail_job_posted_time.setText("(Posted " + diff + ")");
+            /*sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
+            String dateString = sdf.format(date);*/
+        }catch (Exception e){}
+
+        detail_job_details.setText(jobDetailObject.getDescription());
+        int i = 1;
+        String reqs = "";
+        for (JsonElement item : jobDetailObject.getRequirements()) {
+            reqs += i+". "+item.getAsString()+"\n";
+            i++;
+        }
+        reqs = reqs.substring(0, reqs.length() - 2);
+        detail_job_requirements.setText(reqs);
+        detail_job_payment_type.setText(jobDetailObject.getJobType());
+        detail_job_payment_rate.setText(jobDetailObject.getPayment());
+        detail_job_payment_duration.setText(jobDetailObject.getDuration());
+        detail_job_payment_method.setText(jobDetailObject.getPaymentType());
+        detail_job_country.setText(jobDetailObject.getCountry());
+        detail_job_city.setText(jobDetailObject.getCity());
+        detail_job_street_name.setText(jobDetailObject.getStreetName());
+        progress.dismiss();
     }
 }

@@ -22,7 +22,7 @@
             android:src="@drawable/ic_arrow_back_black_48dp"
             android:tint="@color/colorAccent"
             android:gravity="center|center_vertical|center_horizontal"
-            android:id="@+id/imageView" />
+            android:id="@+id/iv_detaild_job_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -41,18 +41,19 @@
             android:tint="@color/colorAccent"
             android:gravity="right"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:id="@+id/iv_detaild_job_favorite" />
 
     </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/relativeLayout"
-        android:layout_above="@+id/linearLayout3"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -93,6 +94,7 @@
                 android:paddingTop="16dp">
 
                 <TextView
+                    android:id="@+id/detail_job_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="4dp"
@@ -109,6 +111,7 @@
                 android:paddingTop="11dp">
 
                 <TextView
+                    android:id="@+id/detail_job_requirements"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="4dp"
@@ -155,6 +158,7 @@
                                 android:textSize="13dp"
                                 android:layout_weight="0.50"/>
                             <TextView
+                                android:id="@+id/detail_job_payment_type"
                                 android:text="Hourly Rate"
                                 android:textColor="#000000"
                                 android:textSize="13dp"
@@ -168,6 +172,7 @@
                                 android:textSize="13dp"
                                 android:layout_weight="0.50"/>
                             <TextView
+                                android:id="@+id/detail_job_payment_rate"
                                 android:text="$10/Hr"
                                 android:textColor="#000000"
                                 android:textSize="13dp"
@@ -191,6 +196,7 @@
                                 android:textSize="13dp" />
 
                             <TextView
+                                android:id="@+id/detail_job_payment_duration"
                                 android:layout_weight="0.50"
                                 android:text="1 Week"
                                 android:textColor="#000000"
@@ -206,6 +212,7 @@
                                 android:textSize="13dp" />
 
                             <TextView
+                                android:id="@+id/detail_job_payment_method"
                                 android:layout_weight="0.50"
                                 android:text="Cash"
                                 android:textColor="#000000"
@@ -251,6 +258,7 @@
                             android:textColor="#b4b4b4"/>
 
                         <TextView
+                            android:id="@+id/detail_job_country"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="France"
@@ -275,6 +283,7 @@
                             android:layout_marginBottom="2dp"/>
 
                         <TextView
+                            android:id="@+id/detail_job_city"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Santiago de Surco"
@@ -300,6 +309,7 @@
                         android:layout_marginBottom="2dp"/>
 
                     <TextView
+                        android:id="@+id/detail_job_street_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Avenida Circunvalacion del Golf"
@@ -307,6 +317,7 @@
                         android:textSize="13dp"/>
 
                     <TextView
+                        android:id="@+id/detail_job_see_on_gmap"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="(See on Google Maps)"

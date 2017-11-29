@@ -21,7 +21,8 @@
         android:id="@+id/title_search_jobs"
         android:paddingTop="15dp"
         android:paddingBottom="5dp"
-        android:paddingLeft="15dp">
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,6 +31,23 @@
             android:textStyle="bold"
             android:textSize="25dp"
             android:text="Search Jobs" />
+
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filter"
+                android:textColor="#717171"
+                android:gravity="center_vertical"
+                android:id="@+id/tv_filter"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -92,44 +110,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.70"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:gravity="center|center_vertical|center_horizontal"
                 android:paddingTop="15px"
                 android:paddingBottom="15px"
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?attr/selectableItemBackground">
+
                 <ImageView
+                    android:id="@+id/imageView2"
                     android:layout_width="wrap_content"
-                    android:layout_height="36dp"
+                    android:layout_height="30dp"
+                    android:gravity="center|center_vertical|center_horizontal"
                     android:src="@drawable/ic_apps_black_48dp"
-                    android:tint="@color/colorAccent"
-                    android:gravity="center|center_vertical|center_horizontal"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center|center_vertical|center_horizontal"
-                android:paddingTop="15px"
-                android:paddingBottom="15px"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground"
-                android:id="@+id/ll_filter">
-                <ImageView
+                    android:tint="#cbcbcb" />
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_filter_list_white_48dp"
-                    android:tint="@color/colorAccent"
-                    android:gravity="center|center_vertical|center_horizontal"/>
+                    android:layout_height="wrap_content"
+                    android:text="Menu"
+                    android:textSize="11dp"
+                    android:textColor="#cbcbcb"/>
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:gravity="center|center_vertical|center_horizontal"
                 android:paddingTop="15px"
                 android:paddingBottom="15px"
@@ -138,10 +147,42 @@
                 android:background="?attr/selectableItemBackground">
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_setting_dark"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_search_black_48dp"
                     android:tint="@color/colorAccent"
                     android:gravity="center|center_vertical|center_horizontal"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search"
+                    android:textSize="11dp"
+                    android:textColor="@color/colorAccent"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:paddingTop="15px"
+                android:paddingBottom="15px"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_setting_dark"
+                    android:tint="#cbcbcb"
+                    android:gravity="center|center_vertical|center_horizontal"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Settings"
+                    android:textSize="11dp"
+                    android:textColor="#cbcbcb"/>
             </LinearLayout>
         </TableRow>
     </TableLayout>
