@@ -32,6 +32,7 @@ import fastmoanyapp.fastmoney.model.job;
 import fastmoanyapp.fastmoney.service.jobService;
 import fastmoanyapp.fastmoney.utils.RetrofitClient;
 import fastmoanyapp.fastmoney.utils.TransparentProgressDialog;
+import fastmoanyapp.fastmoney.utils.UserSessionManager;
 import fastmoanyapp.fastmoney.utils.utils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,6 +62,7 @@ public class DetailJobActivity extends AppCompatActivity{
     TextView detail_job_city;
     TextView detail_job_street_name;
     TextView detail_job_see_on_gmap;
+    UserSessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +70,9 @@ public class DetailJobActivity extends AppCompatActivity{
         setContentView(R.layout.activity_detail_job);
         getSupportActionBar().hide();
 
+        session = new UserSessionManager(this.getBaseContext());
         Map<String, String> headers = new HashMap<>();
-        headers.put("x-access-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiX2lkIjoxLCJ1c2VybmFtZSI6MSwicGFzc3dvcmQiOjF9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsiZW1haWwiOiJyZXF1aXJlIiwidXNlcm5hbWUiOiJpbml0IiwicGFzc3dvcmQiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7ImVtYWlsIjp0cnVlfX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsicGFzc3dvcmQiOiIxMjM0NTYiLCJ1c2VybmFtZSI6InJpa2FyZG8zMDgiLCJfaWQiOiI1OTJhMDIyNjk2Yjc5YjI4ZmNlMWJhNzgifSwiJGluaXQiOnRydWUsImlhdCI6MTUxMTk2NTc2NH0.dlpV24KDkCNqRiP6dEB_Ytelo4Ms1M8eQZ8HNtrMhXc");
+        headers.put("x-access-token", session.getSessionToken());
         JobService = RetrofitClient.getClient(utils.API_BASE_URL, headers).create(jobService.class);
 
         progress = new TransparentProgressDialog(this);

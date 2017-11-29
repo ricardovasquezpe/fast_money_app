@@ -8,9 +8,12 @@ import android.view.Window;
 import java.util.Timer;
 import java.util.TimerTask;
 import fastmoanyapp.fastmoney.R;
+import fastmoanyapp.fastmoney.utils.UserSessionManager;
 
 public class SplashScreenActivity extends Activity {
     private static final long SPLASH_SCREEN_DELAY = 3000;
+    UserSessionManager session;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,14 +21,22 @@ public class SplashScreenActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.splash_screen);
+        session = new UserSessionManager(this.getBaseContext());
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                Intent loginIntent = new Intent().setClass(
-                        SplashScreenActivity.this, LoginActivity.class);
-                startActivity(loginIntent);
-                finish();
+                if(!session.isUserLoggedIn()){
+                    Intent loginIntent = new Intent().setClass(
+                            SplashScreenActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
+                    finish();
+                }else {
+                    Intent mainIntent = new Intent().setClass(
+                            SplashScreenActivity.this, MainActivity.class);
+                    startActivity(mainIntent);
+                    finish();
+                }
             }
         };
 
