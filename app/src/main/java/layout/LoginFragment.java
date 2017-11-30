@@ -46,7 +46,7 @@ public class LoginFragment extends Fragment {
         et_email    = (EditText) view.findViewById(R.id.et_email);
         et_password = (EditText) view.findViewById(R.id.et_password);
 
-        session = new UserSessionManager(view.getContext());
+        session = new UserSessionManager(getActivity().getBaseContext());
         UserService = RetrofitClient.getClient(utils.API_BASE_URL, null).create(userService.class);
 
         btn_login.setEnabled(false);
@@ -96,8 +96,10 @@ public class LoginFragment extends Fragment {
                         showWrongLogin();
                         return;
                     }
-
-                    session.createUserLoginSession(response.body().get("data").getAsJsonObject().get("username").toString(), response.body().get("data").getAsJsonObject().get("password").toString(), response.body().get("token").toString());
+                    String token  = response.body().get("token").toString();
+                    token = token.substring(1);
+                    token = token.substring(0, token.length() - 1);
+                    session.createUserLoginSession(response.body().get("data").getAsJsonObject().get("username").toString(), response.body().get("data").getAsJsonObject().get("password").toString(), token);
                     startActivity(new Intent(getActivity(), MainActivity.class));
                 }
             }

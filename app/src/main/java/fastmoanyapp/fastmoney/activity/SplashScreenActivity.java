@@ -22,7 +22,7 @@ public class SplashScreenActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.splash_screen);
         session = new UserSessionManager(this.getBaseContext());
-
+        //session.logoutUser();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {

@@ -63,7 +63,8 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
 
         session = new UserSessionManager(this.getBaseContext());
         Map<String, String> headers = new HashMap<>();
-        headers.put("x-access-token", session.getSessionToken());
+        String token = session.getSessionToken();
+        headers.put("x-access-token", token);
         JobService = RetrofitClient.getClient(utils.API_BASE_URL, headers).create(jobService.class);
 
         rv_job_list         = (RecyclerView) findViewById(R.id.rv_job_list);
@@ -180,6 +181,7 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
                 if(response.isSuccessful()) {
                     Boolean status = Boolean.parseBoolean(response.body().get("status").toString());
                     if(!status){
+                        Log.e("RESPONSE", response.body().get("data").getAsString());
                         return;
                     }
 

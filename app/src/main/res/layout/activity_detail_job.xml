@@ -328,12 +328,9 @@
 
             </LinearLayout>
 
-
-
         </LinearLayout>
 
     </ScrollView>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -390,7 +387,8 @@
                 android:background="@color/colorAccent"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/detail_job_apply_job">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -400,7 +398,8 @@
                     android:text="Apply now!"
                     android:textColor="#ffffff"
                     android:textSize="18dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:id="@+id/detail_job_apply_job_text" />
 
             </LinearLayout>
         </LinearLayout>

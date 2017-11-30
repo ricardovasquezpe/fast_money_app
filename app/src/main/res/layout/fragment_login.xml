@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/et_email"
         android:textColor="@color/colorWhiteText"
-        android:drawableLeft="@drawable/ic_mail_outline_white_18dp"
+        android:drawableLeft="@drawable/ic_person_outline_black_18dp"
         android:drawablePadding="15dp"
         android:hint="Email"
         android:background="@drawable/outline_edit_text"/>

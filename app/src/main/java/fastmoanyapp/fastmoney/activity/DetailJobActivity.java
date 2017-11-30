@@ -1,6 +1,8 @@
 package fastmoanyapp.fastmoney.activity;
 
+import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +32,14 @@ import java.util.TimeZone;
 
 import fastmoanyapp.fastmoney.R;
 import fastmoanyapp.fastmoney.model.job;
+import fastmoanyapp.fastmoney.service.bidService;
+import fastmoanyapp.fastmoney.service.favoriteService;
 import fastmoanyapp.fastmoney.service.jobService;
 import fastmoanyapp.fastmoney.utils.RetrofitClient;
 import fastmoanyapp.fastmoney.utils.TransparentProgressDialog;
 import fastmoanyapp.fastmoney.utils.UserSessionManager;
 import fastmoanyapp.fastmoney.utils.utils;
+import layout.ApplyJobFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,13 +48,12 @@ import ss.com.bannerslider.banners.RemoteBanner;
 import ss.com.bannerslider.events.OnBannerClickListener;
 import ss.com.bannerslider.views.BannerSlider;
 
-public class DetailJobActivity extends AppCompatActivity{
+public class DetailJobActivity extends AppCompatActivity implements ApplyJobFragment.sendApplyListener{
 
-    BannerSlider detail_job_images;
+    //BannerSlider detail_job_images;
     TransparentProgressDialog progress;
     ImageView iv_detaild_job_back;
     ImageView iv_detaild_job_favorite;
-    jobService JobService;
     job jobDetailObject;
     TextView detail_job_title;
     TextView detail_job_posted_time;
@@ -62,7 +67,14 @@ public class DetailJobActivity extends AppCompatActivity{
     TextView detail_job_city;
     TextView detail_job_street_name;
     TextView detail_job_see_on_gmap;
+    LinearLayout detail_job_apply_job;
+    ApplyJobFragment applyJobFragment;
+    TextView detail_job_apply_job_text;
+
     UserSessionManager session;
+    jobService JobService;
+    bidService BidService;
+    favoriteService FavoriteService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +85,11 @@ public class DetailJobActivity extends AppCompatActivity{
         session = new UserSessionManager(this.getBaseContext());
         Map<String, String> headers = new HashMap<>();
         headers.put("x-access-token", session.getSessionToken());
-        JobService = RetrofitClient.getClient(utils.API_BASE_URL, headers).create(jobService.class);
+        JobService      = RetrofitClient.getClient(utils.API_BASE_URL, headers).create(jobService.class);
+        BidService      = RetrofitClient.getClient(utils.API_BASE_URL, headers).create(bidService.class);
+        FavoriteService = RetrofitClient.getClient(utils.API_BASE_URL, headers).create(favoriteService.class);
+
+        applyJobFragment = new ApplyJobFragment();
 
         progress = new TransparentProgressDialog(this);
         progress.show();
@@ -92,6 +108,8 @@ public class DetailJobActivity extends AppCompatActivity{
         detail_job_city             = (TextView)  findViewById(R.id.detail_job_city);
         detail_job_street_name      = (TextView)  findViewById(R.id.detail_job_street_name);
         detail_job_see_on_gmap      = (TextView)  findViewById(R.id.detail_job_see_on_gmap);
+        detail_job_apply_job        = (LinearLayout)  findViewById(R.id.detail_job_apply_job);
+        detail_job_apply_job_text   = (TextView)  findViewById(R.id.detail_job_apply_job_text);
 
         iv_detaild_job_back.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -101,8 +119,7 @@ public class DetailJobActivity extends AppCompatActivity{
 
         iv_detaild_job_favorite.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                iv_detaild_job_favorite.setImageResource(R.drawable.ic_favorite_black_48dp);
-                Toast.makeText(getApplicationContext(), "Job added on your favorites", Toast.LENGTH_SHORT).show();
+                favoriteJob();
             }
         });
 
@@ -118,6 +135,13 @@ public class DetailJobActivity extends AppCompatActivity{
         Bundle b = getIntent().getExtras();
         String id = b.getString("JOB_ID_CLICKED");
         getJobDetails(id);
+
+        detail_job_apply_job.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                applyJobFragment.show(fm, "Apply Job Dialog");
+            }
+        });
 
         /*BannerSlider bannerSlider = (BannerSlider) findViewById(R.id.detail_job_images);
         List<Banner> banners=new ArrayList<>();
@@ -183,7 +207,6 @@ public class DetailJobActivity extends AppCompatActivity{
                 Log.e("RESPONSE", "Unable to submit post to API.");
             }
         });
-
     }
 
     public void setDataToView(){
@@ -215,5 +238,56 @@ public class DetailJobActivity extends AppCompatActivity{
         detail_job_city.setText(jobDetailObject.getCity());
         detail_job_street_name.setText(jobDetailObject.getStreetName());
         progress.dismiss();
+    }
+
+    @Override
+    public void applyListener(String comment) {
+        BidService.createbid(jobDetailObject.getId(), comment).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    Boolean status = Boolean.parseBoolean(response.body().get("status").toString());
+                    if(!status){
+                        Toast.makeText(getApplicationContext(), "Please Try Again...Sorry for the inconveniences", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    onSuccessbidSent();
+                    Toast.makeText(getApplicationContext(), "Your Bid was sent! Good Luck!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e("RESPONSE", "Unable to submit post to API.");
+            }
+        });
+    }
+
+    public void onSuccessbidSent(){
+        detail_job_apply_job_text.setText("Bid Sent!");
+        detail_job_apply_job.setBackgroundColor(Color.parseColor("#b4b4b4"));
+        detail_job_apply_job.setOnClickListener(null);
+    }
+
+    public void favoriteJob(){
+        FavoriteService.createfavorite(jobDetailObject.getId()).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    Boolean status = Boolean.parseBoolean(response.body().get("status").toString());
+                    if(!status){
+                        Toast.makeText(getApplicationContext(), "Please Try Again...Sorry for the inconveniences", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    iv_detaild_job_favorite.setImageResource(R.drawable.ic_favorite_black_48dp);
+                    Toast.makeText(getApplicationContext(), "Job added on your favorites", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e("RESPONSE", "Unable to submit post to API.");
+            }
+        });
     }
 }

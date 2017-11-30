@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.Editable;
@@ -23,9 +24,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import fastmoanyapp.fastmoney.R;
+import fastmoanyapp.fastmoney.activity.MainActivity;
 import fastmoanyapp.fastmoney.service.userService;
 import fastmoanyapp.fastmoney.utils.DateDialog;
 import fastmoanyapp.fastmoney.utils.RetrofitClient;
+import fastmoanyapp.fastmoney.utils.UserSessionManager;
 import fastmoanyapp.fastmoney.utils.utils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +45,8 @@ public class SingupFragment extends Fragment {
     EditText et_birthdate_su;
     Button btn_sing_up;
     userService UserService;
-    DateDialog dialog;
+    UserSessionManager session;
+    DateDialog dateDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,8 +61,9 @@ public class SingupFragment extends Fragment {
         et_password_su         = (EditText) view.findViewById(R.id.et_password_su);
         et_confirm_password_su = (EditText) view.findViewById(R.id.et_confirm_password_su);
         et_birthdate_su        = (EditText) view.findViewById(R.id.et_birthdate_su);
-        dialog = new DateDialog();
+        dateDialog = new DateDialog();
 
+        session = new UserSessionManager(getActivity().getBaseContext());
         UserService = RetrofitClient.getClient(utils.API_BASE_URL, null).create(userService.class);
         btn_sing_up.setEnabled(false);
         addChangeListenerFields();
@@ -74,15 +79,14 @@ public class SingupFragment extends Fragment {
         btn_sing_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                dialog.show(ft, "DatePicker");
+                doRegister();
             }
         });
         et_birthdate_su.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus) {
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    dialog.show(ft, "DatePicker");
+                    dateDialog.show(ft, "DatePicker");
                 }
             }
         });
@@ -128,12 +132,13 @@ public class SingupFragment extends Fragment {
                         singupFieldsComplete();
                         return;
                     }
-                    FragmentManager fm = getFragmentManager();
+                    /*FragmentManager fm = getFragmentManager();
                     Fragment singup_fragment = fm.findFragmentById(R.id.singup_fragment);
                     Fragment login_fragment  = fm.findFragmentById(R.id.login_fragment);
                     hideFragment(singup_fragment);
                     showFragment(login_fragment);
-                    postRegister();
+                    postRegister();*/
+                    doLogin(et_username_su.getText().toString(), et_password_su.getText().toString());
                 }
             }
 
@@ -262,5 +267,29 @@ public class SingupFragment extends Fragment {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.show(fragment);
         ft.commit();
+    }
+
+    public void doLogin(String email, String password){
+        UserService.authenticate(email, password).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    Boolean status = Boolean.parseBoolean(response.body().get("status").toString());
+                    if(!status){
+                        return;
+                    }
+                    String token  = response.body().get("token").toString();
+                    token = token.substring(1);
+                    token = token.substring(0, token.length() - 1);
+                    session.createUserLoginSession(response.body().get("data").getAsJsonObject().get("username").toString(), response.body().get("data").getAsJsonObject().get("password").toString(), token);
+                    startActivity(new Intent(getActivity(), MainActivity.class));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e("RESPONSE", "Unable to submit post to API.");
+            }
+        });
     }
 }

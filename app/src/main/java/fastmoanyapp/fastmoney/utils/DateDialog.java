@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.widget.DatePicker;
+import android.widget.EditText;
+
 import fastmoanyapp.fastmoney.R;
 import layout.SingupFragment;
 
@@ -16,21 +18,20 @@ import layout.SingupFragment;
  */
 
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener{
-
-
+    EditText birthDate;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Dialog onCreateDialog(Bundle saveInstanceState){
         final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
+        int year = c.get(Calendar.YEAR) - 18;
         int month = c.get(Calendar.MONDAY);
         int day = c.get(Calendar.DAY_OF_MONTH);
+        birthDate = (EditText) getActivity().findViewById(R.id.et_birthdate_su);
         return new DatePickerDialog(getActivity(), R.style.datepicker, this, year, month, day);
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth) {
-
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        birthDate.setText(monthOfYear + "/" + dayOfMonth + "/" + year);
     }
 }
