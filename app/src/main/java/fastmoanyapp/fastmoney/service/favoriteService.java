@@ -16,4 +16,8 @@ public interface favoriteService {
     @POST("/api/createfavorite")
     @FormUrlEncoded
     Call<JsonObject> createfavorite(@Field("id_job") String id_job);
+
+    @POST("/api/removefavorite")
+    @FormUrlEncoded
+    Call<JsonObject> removefavorite(@Field("id_favorite") String id_favorite);
 }

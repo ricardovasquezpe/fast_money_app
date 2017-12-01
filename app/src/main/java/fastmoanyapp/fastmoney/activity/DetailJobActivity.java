@@ -117,12 +117,6 @@ public class DetailJobActivity extends AppCompatActivity implements ApplyJobFrag
             }
         });
 
-        iv_detaild_job_favorite.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                favoriteJob();
-            }
-        });
-
         detail_job_see_on_gmap.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String strUri = "http://maps.google.com/maps?q=loc:" + jobDetailObject.getGeoLocation().get(0).getAsString() + "," + jobDetailObject.getGeoLocation().get(1).getAsString() + " (" + jobDetailObject.getTitle() + ")";
@@ -135,13 +129,6 @@ public class DetailJobActivity extends AppCompatActivity implements ApplyJobFrag
         Bundle b = getIntent().getExtras();
         String id = b.getString("JOB_ID_CLICKED");
         getJobDetails(id);
-
-        detail_job_apply_job.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                applyJobFragment.show(fm, "Apply Job Dialog");
-            }
-        });
 
         /*BannerSlider bannerSlider = (BannerSlider) findViewById(R.id.detail_job_images);
         List<Banner> banners=new ArrayList<>();
@@ -197,7 +184,10 @@ public class DetailJobActivity extends AppCompatActivity implements ApplyJobFrag
                     JsonArray req      = itemObj.get("requirements").getAsJsonArray();
                     JsonArray geo      = itemObj.get("location_geo").getAsJsonArray();
 
-                    jobDetailObject = new job(id, title, description, jobType, payment, paymentType, country, city, createdAt, duration, req, geo, streetname);
+                    String idFavorite   = itemObj.get("id_favorite").getAsString();
+                    String idBid        = itemObj.get("id_bid").getAsString();
+
+                    jobDetailObject = new job(id, title, description, jobType, payment, paymentType, country, city, createdAt, duration, req, geo, streetname, idFavorite, idBid);
                     setDataToView();
                 }
             }
@@ -237,6 +227,34 @@ public class DetailJobActivity extends AppCompatActivity implements ApplyJobFrag
         detail_job_country.setText(jobDetailObject.getCountry());
         detail_job_city.setText(jobDetailObject.getCity());
         detail_job_street_name.setText(jobDetailObject.getStreetName());
+
+        if(jobDetailObject.getIdFavorite() != ""){
+            iv_detaild_job_favorite.setImageResource(R.drawable.ic_favorite_black_48dp);
+            iv_detaild_job_favorite.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    noFavoriteJob();
+                }
+            });
+        }else{
+            iv_detaild_job_favorite.setImageResource(R.drawable.ic_favorite_border_black_48dp);
+            iv_detaild_job_favorite.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    favoriteJob();
+                }
+            });
+        }
+
+        if(jobDetailObject.getIdBid() != ""){
+            onSuccessbidSent();
+        }else{
+            detail_job_apply_job.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    FragmentManager fm = getFragmentManager();
+                    applyJobFragment.show(fm, "Apply Job Dialog");
+                }
+            });
+        }
+
         progress.dismiss();
     }
 
@@ -280,7 +298,39 @@ public class DetailJobActivity extends AppCompatActivity implements ApplyJobFrag
                         return;
                     }
                     iv_detaild_job_favorite.setImageResource(R.drawable.ic_favorite_black_48dp);
+                    iv_detaild_job_favorite.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            noFavoriteJob();
+                        }
+                    });
                     Toast.makeText(getApplicationContext(), "Job added on your favorites", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e("RESPONSE", "Unable to submit post to API.");
+            }
+        });
+    }
+
+    public void noFavoriteJob(){
+        FavoriteService.removefavorite(jobDetailObject.getIdFavorite()).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.isSuccessful()) {
+                    Boolean status = Boolean.parseBoolean(response.body().get("status").toString());
+                    if(!status){
+                        Toast.makeText(getApplicationContext(), "Please Try Again...Sorry for the inconveniences", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    iv_detaild_job_favorite.setImageResource(R.drawable.ic_favorite_border_black_48dp);
+                    iv_detaild_job_favorite.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            favoriteJob();
+                        }
+                    });
+                    Toast.makeText(getApplicationContext(), "Job removed from your favorites", Toast.LENGTH_SHORT).show();
                 }
             }
 

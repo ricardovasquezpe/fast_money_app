@@ -22,6 +22,8 @@ public class job {
     private String Duration;
     private JsonArray Requirements;
     private JsonArray GeoLocation;
+    private String IdFavorite;
+    private String IdBid;
     public TimeInterpolator interpolator;
 
     private int TypeLoad;
@@ -40,7 +42,7 @@ public class job {
         this.TypeLoad     = typeLoad;
     }
 
-    public job(String id, String title, String description, String jobType, String payment, String paymentType, String country, String city, String createdAt, String duration, JsonArray requirements, JsonArray geoLocation, String streetName){
+    public job(String id, String title, String description, String jobType, String payment, String paymentType, String country, String city, String createdAt, String duration, JsonArray requirements, JsonArray geoLocation, String streetName, String idFavorite, String idBid){
         this.Id           = id;
         this.Title        = title;
         this.Description  = description;
@@ -54,6 +56,8 @@ public class job {
         this.Requirements = requirements;
         this.GeoLocation  = geoLocation;
         this.StreetName   = streetName;
+        this.IdFavorite   = idFavorite;
+        this.IdBid        = idBid;
     }
 
     public String getId() {
@@ -174,5 +178,21 @@ public class job {
 
     public void setStreetName(String streetName) {
         StreetName = streetName;
+    }
+
+    public String getIdFavorite() {
+        return IdFavorite;
+    }
+
+    public void setIdFavorite(String idFavorite) {
+        IdFavorite = idFavorite;
+    }
+
+    public String getIdBid() {
+        return IdBid;
+    }
+
+    public void setIdBid(String idBid) {
+        IdBid = idBid;
     }
 }
