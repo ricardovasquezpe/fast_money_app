@@ -24,21 +24,14 @@ public class job {
     private JsonArray GeoLocation;
     private String IdFavorite;
     private String IdBid;
-    public TimeInterpolator interpolator;
 
     private int TypeLoad;
 
-    public job(String id, String title, String description, String jobType, String payment, String paymentType, String country, String city, String createdAt, TimeInterpolator interpolator, int typeLoad) {
+    public job(String id, String title, String description, String createdAt, int typeLoad) {
         this.Id           = id;
         this.Title        = title;
         this.Description  = description;
-        this.JobType      = jobType;
-        this.Payment      = payment;
-        this.PaymentType  = paymentType;
-        this.Country      = country;
-        this.City         = city;
         this.CreatedAt    = createdAt;
-        this.interpolator = interpolator;
         this.TypeLoad     = typeLoad;
     }
 
@@ -146,14 +139,6 @@ public class job {
 
     public void setDuration(String duration) {
         Duration = duration;
-    }
-
-    public TimeInterpolator getInterpolator() {
-        return interpolator;
-    }
-
-    public void setInterpolator(TimeInterpolator interpolator) {
-        this.interpolator = interpolator;
     }
 
     public JsonArray getRequirements() {

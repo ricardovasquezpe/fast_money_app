@@ -137,7 +137,7 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
     }
 
     public void loadMoreJobs(String createdAtLast){
-        job j = new job("", "", "", "", "", "", "", "", "", Utils.createInterpolator(Utils.ACCELERATE_DECELERATE_INTERPOLATOR), 1);
+        job j = new job("", "", "", "", 1);
         jobInfoList.add(j);
         jobInfoAdapter.notifyItemInserted(jobInfoList.size()-1);
 
@@ -240,23 +240,9 @@ public class MainActivity extends FragmentActivity implements FilterMainFragment
             String title       = itemObj.get("title").getAsString();
             String description = itemObj.get("description").getAsString();
 
-            JsonObject paymentObj = itemObj.get("payment").getAsJsonArray().get(0).getAsJsonObject();
-            String jobType     = paymentObj.get("type").getAsString();
-
-            String payment = "$" + paymentObj.get("amount").getAsString();
-            if(jobType.equals(utils.TYPE_JOB_HOURLY_RATE)){
-                payment += "/Hr";
-            }
-
-            String paymentType = paymentObj.get("method").getAsString();
-
-            JsonObject locObj  = itemObj.get("location").getAsJsonArray().get(0).getAsJsonObject();
-            String country     = locObj.get("country").getAsString();
-            String city        = locObj.get("city").getAsString();
-
             String createdAt   = itemObj.get("created_at").getAsString();
 
-            job j = new job(id, title, description, jobType, payment, paymentType, country, city, createdAt, Utils.createInterpolator(Utils.ACCELERATE_DECELERATE_INTERPOLATOR), 0);
+            job j = new job(id, title, description, createdAt, 0);
             jobInfoList.add(j);
         }
     }
