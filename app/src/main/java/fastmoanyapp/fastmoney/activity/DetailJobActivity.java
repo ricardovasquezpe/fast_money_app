@@ -67,6 +67,7 @@ public class DetailJobActivity extends AppCompatActivity implements ApplyJobFrag
     TextView detail_job_city;
     TextView detail_job_street_name;
     TextView detail_job_see_on_gmap;
+    TextView detail_job_resume_pay;
     LinearLayout detail_job_apply_job;
     ApplyJobFragment applyJobFragment;
     TextView detail_job_apply_job_text;
@@ -110,6 +111,7 @@ public class DetailJobActivity extends AppCompatActivity implements ApplyJobFrag
         detail_job_see_on_gmap      = (TextView)  findViewById(R.id.detail_job_see_on_gmap);
         detail_job_apply_job        = (LinearLayout)  findViewById(R.id.detail_job_apply_job);
         detail_job_apply_job_text   = (TextView)  findViewById(R.id.detail_job_apply_job_text);
+        detail_job_resume_pay       = (TextView)  findViewById(R.id.detail_job_resume_pay);
 
         iv_detaild_job_back.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -227,6 +229,7 @@ public class DetailJobActivity extends AppCompatActivity implements ApplyJobFrag
         detail_job_country.setText(jobDetailObject.getCountry());
         detail_job_city.setText(jobDetailObject.getCity());
         detail_job_street_name.setText(jobDetailObject.getStreetName());
+        detail_job_resume_pay.setText(jobDetailObject.getPayment());
 
         if(jobDetailObject.getIdFavorite() != ""){
             iv_detaild_job_favorite.setImageResource(R.drawable.ic_favorite_black_48dp);
